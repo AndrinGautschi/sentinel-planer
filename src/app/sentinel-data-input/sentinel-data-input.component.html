@@ -2,7 +2,7 @@
   <md-toolbar>
     <span>Wachtdaten erfassen</span>
   </md-toolbar>
-  <form novalidate [formGroup]="sentinelDataForm" (ngSubmit)="onFormSubmit()">
+  <form novalidate [formGroup]="sentinelDataForm" (ngSubmit)="onSentinelDataFormSubmit()">
     <div>
       <md-input-container><input md-input type="text" placeholder="Kdt" formControlName="kdt">
         <md-hint class="error" *ngIf="sentinelDataForm.get('kdt').touched && sentinelDataForm.get('kdt').hasError('required')">Dieses Feld wird benötigt</md-hint>
@@ -29,12 +29,12 @@
         </div>
       </div>
       <div>
-        <button md-button type="button"(click)="addGruppe()">
+        <button md-button type="button"(click)="addGroupOfTwo()">
           <md-icon>add</md-icon>
         </button>
       </div>
     </div>
-    <button md-raised-button type="submit" *ngIf="!loading" [disabled]="sentinelDataForm.invalid || !valideAnzWachtleute() || !validSentinelDuration()">Submit Form</button>
+    <button md-raised-button type="submit" *ngIf="!loading" [disabled]="sentinelDataForm.invalid || !validNumberOfGurads() || !validSentinelDuration()">Submit Form</button>
     <button md-raised-button type="button" (click)="fillAndNext()">Fill and Next</button>
 
   </form>

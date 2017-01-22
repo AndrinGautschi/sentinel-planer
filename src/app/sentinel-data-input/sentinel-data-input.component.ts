@@ -18,76 +18,74 @@ const maxSentinelDurationInHours: number = 300; // Random Zahl, um zu verhindern
   templateUrl: 'sentinel-data-input.component.html',
   styleUrls: ['sentinel-data-input.component.css']
 })
+// TODO: beim zurück Navigieren auf den Sentinel Data Screen soll das bereits abgefüllte Formular angezeigt werden
+// TODO: bei Zweimaligem Durchgang (erneutes Abfüllen des Formulars) sollten alle Daten des letzten Durchganges gelöscht werden
+// TODO: Testen aller Methoden
+// Verwaltet das Input-Formular, auf Basis dessen die restliche Applikation ihre Arbeit verrichtet
 export class SentinelDataInputComponent implements OnInit {
-  sentinelDataForm: FormGroup;
-  loading: boolean = false;
+  public sentinelDataForm: FormGroup;
+  public loading: boolean;
 
   constructor(
-    private wachtDataService: WachtDataService,
+    private sentinelData: WachtDataService,
     private formBuilder: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+    this.loading = false;
+  }
 
   ngOnInit() {
-    if (this.sentinelDataForm) return;
     this.sentinelDataForm = this.formBuilder.group({
       kdt: ['', [Validators.required, Validators.minLength(2)]],
       stv: ['', [Validators.required, Validators.minLength(2)]],
       datefrom: [new Date(), [Validators.required]],
       dateto: [new Date(), [Validators.required]],
       gruppen: this.formBuilder.array([
-        this.initGruppe()
+        this.initializeGroupOfTwo()
       ])
     });
   }
 
-  public valideAnzWachtleute(): boolean {
-    var anzPeople = this.countWachtleute(this.sentinelDataForm.value.gruppen);
-    if (anzPeople < minNumberGuards || anzPeople > maxNumberGuards) return false;
-    return true;
-  }
-
-  public validSentinelDuration(): boolean {
-    var dauerInStunden = (this.sentinelDataForm.value.dateto.valueOf() - this.sentinelDataForm.value.dateto.valueOf()) / 1000 / 60 / 60;
-    if (dauerInStunden > maxSentinelDurationInHours || dauerInStunden < minSentinelDurationInHours) return false;
-    return true;
-  }
-
-  // TODO: beim Zurückgehen auf den Wacht-Daten Screen soll das bereits abgefüllte Formular angezeigt werden
-  // TODO: bei Zweimaligem Durchgang (erneutes Abfüllen des Formulars) sollten alle Daten des letzten Durchganges gelöscht werden
-  public onFormSubmit() {
+  public onSentinelDataFormSubmit() {
     this.loading = true;
-    this.wachtDataService.reset();
-
-    // Setze Gruppen zusammen
-    var personenArray: Array<Person> = this.extractAllPersonen(this.sentinelDataForm.value.gruppen);
-
-    // Erstelle Wacht-Objekt für Speicherung im DataService
-    this.wachtDataService.setWacht(new Wacht(
+    this.sentinelData.reset(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
+    var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.gruppen);
+    this.sentinelData.setSentinel(new Wacht(
       new Person(this.sentinelDataForm.value.kdt),
       new Person(this.sentinelDataForm.value.stv),
       this.sentinelDataForm.value.datefrom,
       this.sentinelDataForm.value.dateto,
-      personenArray
+      people
     ));
-
     this.loading = false;
     this.router.navigateByUrl('/auswaehlen');
   }
 
-  public addGruppe(): void {
-    const control = <FormArray>this.sentinelDataForm.get('gruppen');
-    control.push(this.initGruppe());
+  public validNumberOfGurads(): boolean {
+    var numberOfGuards = this.countGuards(this.sentinelDataForm.value.gruppen);
+    if (numberOfGuards < minNumberGuards || numberOfGuards > maxNumberGuards) return false;
+    return true;
   }
 
-  private initGruppe():FormGroup {
+  public validSentinelDuration(): boolean {
+    var durationInHours = (this.sentinelDataForm.value.dateto.valueOf() - this.sentinelDataForm.value.dateto.valueOf()) / 1000 / 60 / 60;
+    if (durationInHours > maxSentinelDurationInHours || durationInHours < minSentinelDurationInHours) return false;
+    return true;
+  }
+
+  public addGroupOfTwo(): void {
+    const control = <FormArray>this.sentinelDataForm.get('gruppen');
+    control.push(this.initializeGroupOfTwo());
+  }
+
+  private initializeGroupOfTwo():FormGroup {
     return this.formBuilder.group({
       name1: ['', [Validators.minLength(2)]],
       name2: ['', [Validators.minLength(2)]]
     });
   }
 
-  private countWachtleute(array: Array<{name1: string, name2: string}>): number {
+  private countGuards(array: Array<{name1: string, name2: string}>): number { // Zählt nur alle abgefüllten Felder
     var counter = 0;
     for(var index = 0; index < array.length; index++) {
       if (array[index].name1) counter++;
@@ -96,25 +94,25 @@ export class SentinelDataInputComponent implements OnInit {
     return counter;
   }
 
-  private extractAllPersonen(array: Array<{name1: string, name2: string}>): Array<Person> {
-    var personen: Array<Person> = Array<Person>();
+  private extractPeopleFromInputForm(array: Array<{name1: string, name2: string}>): Array<Person> {
+    var guards: Array<Person> = Array<Person>();
     for (var index = 0; index < array.length; index++) {
-      if (array[index].name1) personen.push(new Person(array[index].name1));
-      if (array[index].name2) personen.push(new Person(array[index].name2));
+      if (array[index].name1) guards.push(new Person(array[index].name1));
+      if (array[index].name2) guards.push(new Person(array[index].name2));
     }
-    return personen;
+    return guards;
   }
 
-  // For testing purposes only
+  // Nur für interaktives Testen!
   public fillAndNext() {
-    var personenArray: Array<Person> = [new Person('Andrin1'), new Person('Andrin2'), new Person('Andrin3'), new Person('Andrin4'), new Person('Andrin5'), new Person('Andrin6'), new Person('Andrin7'), new Person('Andrin8'), new Person('Andrin9')];
-    var dateBis:Date = new Date(new Date().setDate(new Date().getDate() +1));
-    this.wachtDataService.setWacht(new Wacht(
+    var guards: Array<Person> = [new Person('Andrin1'), new Person('Andrin2'), new Person('Andrin3'), new Person('Andrin4'), new Person('Andrin5'), new Person('Andrin6'), new Person('Andrin7'), new Person('Andrin8'), new Person('Andrin9')];
+    var dateTo:Date = new Date(new Date().setDate(new Date().getDate() +1));
+    this.sentinelData.setSentinel(new Wacht(
       new Person('Chef'),
       new Person('Halbechef'),
       new Date(),
-      dateBis,
-      personenArray
+      dateTo,
+      guards
     ));
     this.router.navigateByUrl('/auswaehlen');
   }

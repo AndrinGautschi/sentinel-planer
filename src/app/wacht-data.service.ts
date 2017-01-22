@@ -15,7 +15,7 @@ export class WachtDataService {
     return this._plaene;
   }
 
-  public setWacht(value: Wacht) {
+  public setSentinel(value: Wacht) {
     this._wacht = value;
   }
 
