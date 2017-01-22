@@ -1,0 +1,20 @@
+div.plan-feld {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 4px;
+}
+.plan-feld.yellow {
+  background-color: yellow;
+}
+.plan-feld.green {
+  background-color: green;
+}
+.plan-feld.red {
+  background-color: red;
+}
+.scroll-horizontal {
+  width: auto;
+  overflow-x: scroll;
+  white-space: nowrap;
+}

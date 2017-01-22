@@ -1,0 +1,47 @@
+<md-card>
+  <md-toolbar>
+    <span>Wachtdaten erfassen</span>
+  </md-toolbar>
+  <form novalidate [formGroup]="sentinelDataForm" (ngSubmit)="onFormSubmit()">
+    <div>
+      <md-input-container><input md-input type="text" placeholder="Kdt" formControlName="kdt">
+        <md-hint class="error" *ngIf="sentinelDataForm.get('kdt').touched && sentinelDataForm.get('kdt').hasError('required')">Dieses Feld wird benötigt</md-hint>
+        <md-hint class="error" *ngIf="sentinelDataForm.get('kdt').touched && sentinelDataForm.get('kdt').hasError('minlength')">Mindestlänge von zwei Zeichen</md-hint>
+      </md-input-container>
+      <md-input-container><input md-input type="text" placeholder="Stv" formControlName="stv">
+        <md-hint class="error" *ngIf="sentinelDataForm.get('stv').touched && sentinelDataForm.get('stv').hasError('required')">Dieses Feld wird benötigt</md-hint>
+        <md-hint class="error" *ngIf="sentinelDataForm.get('stv').touched && sentinelDataForm.get('stv').hasError('minlength')">Mindestlänge von zwei Zeichen</md-hint>
+      </md-input-container>
+    </div>
+    <div> <!-- Oh mein Gott! TODO: Anzeige ausgewählte Zeit -->
+      <md2-datepicker type="datetime" formControlName="datefrom"></md2-datepicker>
+      <md2-datepicker type="datetime" formControlName="dateto"></md2-datepicker><!-- TODO: Code mocken, damit er einen Hint akzeptiert -->
+    </div>
+    <div formArrayName="gruppen">
+      <div *ngFor="let gruppe of sentinelDataForm.get('gruppen').controls; let i = index">
+        <div [formGroupName]="i">
+          <md-input-container><input md-input type="text" placeholder="Name" formControlName="name1">
+            <md-hint *ngIf="sentinelDataForm.get('gruppen').controls[i].get('name1').touched && sentinelDataForm.get('gruppen').controls[i].get('name1').hasError('minlength')">Mindestlänge von zwei Zeichen</md-hint>
+          </md-input-container>
+          <md-input-container><input md-input type="text" placeholder="Name" formControlName="name2">
+            <md-hint *ngIf="sentinelDataForm.get('gruppen').controls[i].get('name2').touched && sentinelDataForm.get('gruppen').controls[i].get('name2').hasError('minlength')">Mindestlänge von zwei Zeichen</md-hint>
+          </md-input-container>
+        </div>
+      </div>
+      <div>
+        <button md-button type="button"(click)="addGruppe()">
+          <md-icon>add</md-icon>
+        </button>
+      </div>
+    </div>
+    <button md-raised-button type="submit" *ngIf="!loading" [disabled]="sentinelDataForm.invalid || !valideAnzWachtleute() || !validSentinelDuration()">Submit Form</button>
+    <button md-raised-button type="button" (click)="fillAndNext()">Fill and Next</button>
+
+  </form>
+  <div *ngIf="loading" class="loader">
+    <span class="dot dot_1"></span>
+    <span class="dot dot_2"></span>
+    <span class="dot dot_3"></span>
+    <span class="dot dot_4"></span>
+  </div>
+</md-card>

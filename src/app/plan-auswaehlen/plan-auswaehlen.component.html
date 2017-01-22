@@ -1,0 +1,15 @@
+<md-toolbar>
+  <span>Plan auswählen</span>
+</md-toolbar>
+
+<md-grid-list cols="4" rowHeight="450">
+  <md-grid-tile *ngFor="let modus of modi">
+    <md-card>
+      <app-plan-card [modus]="modus" [personen]="wacht.personen" [dauer]="wacht.getDauerInStunden()"></app-plan-card>
+      <md-card-actions> <!-- TODO: Button darf während des Ladens nicht angezeigt werden -->
+        <button md-button type="button" (click)="konfigurieren(modus)">Konfigurieren</button>
+      </md-card-actions>
+    </md-card>
+  </md-grid-tile>
+
+</md-grid-list>

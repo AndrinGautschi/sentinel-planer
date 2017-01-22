@@ -1,0 +1,17 @@
+<md-sidenav-container>
+  <md-sidenav #sidenav mode="side" [opened]="true">
+    <md-nav-list>
+      <!-- TODO: Bezug aus seperatem File -->
+      <!-- TODO: Das Vorzeitige Aufrufen von Routes blockieren -->
+      <a md-list-item routerLink="/daten" routerLinkActive="active">Daten</a>
+      <a md-list-item routerLink="/auswaehlen" routerLinkActive="active">Auswählen</a>
+      <a md-list-item routerLink="/konfigurieren" routerLinkActive="active">Konfigurieren</a>
+      <a md-list-item routerLink="/drucken" routerLinkActive="active">Drucken</a>
+    </md-nav-list>
+  </md-sidenav>
+
+  <div id="content">
+    <router-outlet></router-outlet>
+
+  </div>
+</md-sidenav-container>

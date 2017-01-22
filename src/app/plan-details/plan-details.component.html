@@ -1,0 +1,9 @@
+
+<div *ngIf="selectedPlan" class="scroll-horizontal">
+  <md-toolbar>{{selectedPlan.title}}</md-toolbar>
+  <!-- For each row -->
+  <div *ngFor="let zuteilung of selectedPlan.zuteilung; let yIndex = index">
+    <!-- For each col -->
+    <div class="plan-feld" [ngClass]="getFieldClass(field)" *ngFor="let field of zuteilung.zuteilung; let xIndex = index" (click)="fieldClicked(xIndex, yIndex)"></div>
+  </div>
+</div>
