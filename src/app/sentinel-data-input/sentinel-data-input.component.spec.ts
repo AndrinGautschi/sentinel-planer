@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SentinelDataComponent } from './sentinel-data.component';
+import { SentinelDataInputComponent } from './sentinel-data-input.component';
 
-describe('SentinelDataComponent', () => {
-  let component: SentinelDataComponent;
-  let fixture: ComponentFixture<SentinelDataComponent>;
+describe('SentinelDataInputComponent', () => {
+  let component: SentinelDataInputComponent;
+  let fixture: ComponentFixture<SentinelDataInputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SentinelDataComponent ]
+      declarations: [ SentinelDataInputComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SentinelDataComponent);
+    fixture = TestBed.createComponent(SentinelDataInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

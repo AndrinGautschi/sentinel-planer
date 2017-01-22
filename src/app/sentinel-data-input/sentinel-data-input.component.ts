@@ -10,15 +10,15 @@ const maxNumberGuards: number = 16;
 const minNumberGuards: number = 4;
 const minSentinelDurationInHours: number = 4;
 const maxSentinelDurationInHours: number = 300; // Random Zahl, um zu verhindern, dass jemand ein ganzes Jahr verplant.
-                                            // Desweiteren spielt es über grosse Zeiträume hinweg keine erhebliche
-                                            // Rolle, wie ein Plan gemacht wird, da sich automatisch eine Fairness bildet.
+                                                // Desweiteren spielt es über grosse Zeiträume hinweg keine erhebliche
+                                                // Rolle, wie ein Plan gemacht wird, da sich automatisch eine Fairness bildet.
 
 @Component({
   selector: 'app-wacht-daten',
-  templateUrl: './wacht-daten.component.html',
-  styleUrls: ['sentinel-data.component.css']
+  templateUrl: 'sentinel-data-input.component.html',
+  styleUrls: ['sentinel-data-input.component.css']
 })
-export class SentinelDataComponent implements OnInit {
+export class SentinelDataInputComponent implements OnInit {
   sentinelDataForm: FormGroup;
   loading: boolean = false;
 
