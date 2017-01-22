@@ -2,7 +2,7 @@
   <span>Plan auswählen</span>
 </md-toolbar>
 
-<md-grid-list cols="4" rowHeight="450">
+<md-grid-list cols="7" rowHeight="500">
   <md-grid-tile *ngFor="let modus of modi">
     <md-card>
       <app-plan-card [modus]="modus" [personen]="wacht.personen" [dauer]="wacht.getDauerInStunden()"></app-plan-card>

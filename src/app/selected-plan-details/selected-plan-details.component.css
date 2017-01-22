@@ -1,16 +1,16 @@
-div.plan-feld {
+div.plan-field {
   width: 30px;
   height: 30px;
   display: inline-block;
   margin-right: 4px;
 }
-.plan-feld.yellow {
+.plan-field.yellow {
   background-color: yellow;
 }
-.plan-feld.green {
+.plan-field.green {
   background-color: green;
 }
-.plan-feld.red {
+.plan-field.red {
   background-color: red;
 }
 .scroll-horizontal {

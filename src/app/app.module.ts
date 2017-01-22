@@ -13,7 +13,7 @@ import { WachtDataService } from './wacht-data.service';
 import { SentinelDataInputComponent } from './sentinel-data-input/sentinel-data-input.component';
 import { PlanAuswaehlenComponent } from './plan-auswaehlen/plan-auswaehlen.component';
 import { PlanCardComponent } from './plan-card/plan-card.component';
-import { PlanDetailsComponent } from './selected-plan-details/plan-details.component';
+import { PlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },

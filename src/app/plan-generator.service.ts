@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Plan} from "../Plan";
 import {Modus} from "../Modus";
 import {Person} from "../Person";
-import {Zuteilung} from "../Zuteilung";
+import {Allocation} from "../Allocation";
 import {forEach} from "@angular/router/src/utils/collection";
 import any = jasmine.any;
 
@@ -103,13 +103,13 @@ export class PlanGeneratorService {
         exitNow = exitNow || !modus.validModi() ? true : false;
     if (exitNow) return;
 
-    var zuteilungen = Array<Zuteilung>();
+    var zuteilungen = Array<Allocation>();
     for (var index = 0; index < personen.length; index++) {
       var personZuteilung = Array<string>();
       for(var stundenIndenx = 0; stundenIndenx < zuteilungsArray.length; stundenIndenx++) {
         personZuteilung.push(zuteilungsArray[stundenIndenx][index]);
       }
-      zuteilungen.push(new Zuteilung(personZuteilung, personen[index]));
+      zuteilungen.push(new Allocation(personZuteilung, personen[index]));
     }
     return new Plan(modus.title, modus, zuteilungen);
   }

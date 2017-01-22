@@ -1,0 +1,12 @@
+<!-- TODO: Namen pro Zuteilung -->
+<!-- TODO: Zeitraster -->
+<!-- TODO: Weiter-Button für Sprung zur Druck-Liste -->
+<!-- TODO: Dynamische Anzeige der Fairness für jede Person und gesammt -->
+<div *ngIf="selectedPlan" class="scroll-horizontal">
+  <md-toolbar>{{selectedPlan.title}}</md-toolbar>
+  <!-- For each row -->
+  <div *ngFor="let allocation of selectedPlan.zuteilung; let yIndex = index">
+    <!-- For each col -->
+    <div class="plan-field" [ngClass]="getFieldClass(field)" *ngFor="let field of allocation.allcation; let xIndex = index" (click)="fieldClicked(xIndex, yIndex)"></div>
+  </div>
+</div>

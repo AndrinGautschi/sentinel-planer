@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Zuteilung} from "../Zuteilung";
+import {Allocation} from "../Allocation";
 
 // TODO: In Service auslagern?
 const dienst = 'd';

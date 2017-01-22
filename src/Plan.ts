@@ -1,5 +1,5 @@
 import {Modus} from "./Modus";
-import {Zuteilung} from "./Zuteilung";
+import {Allocation} from "./Allocation";
 /**
  * Created by Andrin on 16.01.2017.
  */
@@ -13,12 +13,12 @@ export class Plan {
     return this._modus;
   }
 
-  get zuteilung(): Zuteilung[] {
+  get zuteilung(): Allocation[] {
     return this._zuteilung;
   }
   constructor(
     private _title: string,
     private _modus: Modus,
-    private _zuteilung: Zuteilung[]
+    private _zuteilung: Allocation[]
   ){ }
 }

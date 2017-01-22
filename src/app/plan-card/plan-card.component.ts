@@ -5,7 +5,7 @@ import {FairnessService} from "../fairness.service";
 import {PlanGeneratorService} from "../plan-generator.service";
 import {Plan} from "../../Plan";
 import {log} from "util";
-import {Zuteilung} from "../../Zuteilung";
+import {Allocation} from "../../Allocation";
 import {WachtDataService} from "../wacht-data.service";
 
 @Component({
@@ -39,7 +39,7 @@ export class PlanCardComponent implements OnInit {
     var personen = new Array<{name: string, wertung: number}>();
 
     for (var i = 0; i < plan.zuteilung.length; i++) {
-      personenWertung.push(this.fairness.getFairnessIndikatorPerson(plan.zuteilung[i].zuteilung));
+      personenWertung.push(this.fairness.getFairnessIndikatorPerson(plan.zuteilung[i].allcation));
     }
 
     var max_value = Math.max.apply(this, personenWertung);

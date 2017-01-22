@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
     GeneratorModiService
   ]
 })
+// TODO: Observable einbauen, das auf sentinelDataService.reset() hört und die lokalen Variablen neu zuweist
 export class PlanAuswaehlenComponent implements OnInit {
   get wacht(): Wacht {
     return this._wacht;

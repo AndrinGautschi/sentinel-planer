@@ -14,7 +14,7 @@ const maxSentinelDurationInHours: number = 300; // Random Zahl, um zu verhindern
                                                 // Rolle, wie ein Plan gemacht wird, da sich automatisch eine Fairness bildet.
 
 @Component({
-  selector: 'app-wacht-daten',
+  selector: 'app-sentinel-data-input',
   templateUrl: 'sentinel-data-input.component.html',
   styleUrls: ['sentinel-data-input.component.css']
 })
@@ -36,11 +36,11 @@ export class SentinelDataInputComponent implements OnInit {
 
   ngOnInit() {
     this.sentinelDataForm = this.formBuilder.group({
-      kdt: ['', [Validators.required, Validators.minLength(2)]],
-      stv: ['', [Validators.required, Validators.minLength(2)]],
+      commander: ['', [Validators.required, Validators.minLength(2)]],
+      deputy: ['', [Validators.required, Validators.minLength(2)]],
       datefrom: [new Date(), [Validators.required]],
       dateto: [new Date(), [Validators.required]],
-      gruppen: this.formBuilder.array([
+      groups: this.formBuilder.array([
         this.initializeGroupOfTwo()
       ])
     });
@@ -49,10 +49,10 @@ export class SentinelDataInputComponent implements OnInit {
   public onSentinelDataFormSubmit() {
     this.loading = true;
     this.sentinelData.reset(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
-    var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.gruppen);
+    var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.groups);
     this.sentinelData.setSentinel(new Wacht(
-      new Person(this.sentinelDataForm.value.kdt),
-      new Person(this.sentinelDataForm.value.stv),
+      new Person(this.sentinelDataForm.value.commander),
+      new Person(this.sentinelDataForm.value.deputy),
       this.sentinelDataForm.value.datefrom,
       this.sentinelDataForm.value.dateto,
       people
@@ -62,7 +62,7 @@ export class SentinelDataInputComponent implements OnInit {
   }
 
   public validNumberOfGurads(): boolean {
-    var numberOfGuards = this.countGuards(this.sentinelDataForm.value.gruppen);
+    var numberOfGuards = this.countGuards(this.sentinelDataForm.value.groups);
     if (numberOfGuards < minNumberGuards || numberOfGuards > maxNumberGuards) return false;
     return true;
   }
@@ -74,7 +74,7 @@ export class SentinelDataInputComponent implements OnInit {
   }
 
   public addGroupOfTwo(): void {
-    const control = <FormArray>this.sentinelDataForm.get('gruppen');
+    const control = <FormArray>this.sentinelDataForm.get('groups');
     control.push(this.initializeGroupOfTwo());
   }
 
