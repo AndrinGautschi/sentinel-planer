@@ -9,8 +9,8 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-plan-auswaehlen',
-  templateUrl: './plan-auswaehlen.component.html',
-  styleUrls: ['./plan-auswaehlen.component.css'],
+  templateUrl: 'select-plan.component.html',
+  styleUrls: ['select-plan.component.css'],
   providers: [
     FairnessService,
     PlanGeneratorService,

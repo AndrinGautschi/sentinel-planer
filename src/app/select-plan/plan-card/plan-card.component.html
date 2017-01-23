@@ -1,0 +1,15 @@
+
+<div *ngIf="loading">
+  <div class="loader">
+    <span class="dot dot_1"></span>
+    <span class="dot dot_2"></span>
+    <span class="dot dot_3"></span>
+    <span class="dot dot_4"></span>
+  </div>
+</div>
+<div *ngIf="!loading">
+  <md-progress-circle [value]="viewModel.score" mode="determinate" ></md-progress-circle> <!-- TODO: Prozentangabe für Fairness-Indikator -->
+  <div *ngFor="let person of viewModel.persons">
+    <label for="progressBar{{index}}">{{person.name}}</label><md-progress-bar id="progressBar{{index}}" [value]="person.score"></md-progress-bar>
+  </div>
+</div>

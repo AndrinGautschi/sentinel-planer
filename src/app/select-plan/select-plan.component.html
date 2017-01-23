@@ -5,7 +5,7 @@
 <md-grid-list cols="7" rowHeight="500">
   <md-grid-tile *ngFor="let modus of modi">
     <md-card>
-      <app-plan-card [modus]="modus" [personen]="wacht.guards" [dauer]="wacht.getDurationInHours()"></app-plan-card>
+      <app-plan-card [mode]="modus" [persons]="wacht.guards" [duration]="wacht.getDurationInHours()"></app-plan-card>
       <md-card-actions> <!-- TODO: Button darf während des Ladens nicht angezeigt werden -->
         <button md-button type="button" (click)="konfigurieren(modus)">Konfigurieren</button>
       </md-card-actions>

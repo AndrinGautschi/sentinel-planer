@@ -5,20 +5,22 @@ import {Allocation} from "./Allocation";
  */
 
 export class Plan {
+  constructor(
+    private _title: string,
+    private _mode: Mode,
+    private _allocation: Allocation[]
+  ){ }
+
   get title(): string {
     return this._title;
   }
 
-  get modus(): Mode {
-    return this._modus;
+  get mode(): Mode {
+    return this._mode;
   }
 
-  get zuteilung(): Allocation[] {
-    return this._zuteilung;
+  get allocation(): Allocation[] {
+    return this._allocation;
   }
-  constructor(
-    private _title: string,
-    private _modus: Mode,
-    private _zuteilung: Allocation[]
-  ){ }
+
 }
