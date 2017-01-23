@@ -4,7 +4,7 @@ import {Person} from "../../../Person";
 import {FairnessService} from "../../fairness.service";
 import {PlanGeneratorService} from "../../plan-generator.service";
 import {Plan} from "../../../Plan";
-import {WachtDataService} from "../../wacht-data.service";
+import {SentinelDataService} from "../../sentinel-data.service";
 
 @Component({
   selector: 'app-plan-card',
@@ -30,13 +30,13 @@ export class PlanCardComponent implements OnInit {
   constructor(
     private fairnessGenerator: FairnessService,
     private planGenerator: PlanGeneratorService,
-    private sentinelData: WachtDataService
+    private sentinelData: SentinelDataService
   ) { }
 
   ngOnInit() {
     if (!this.initializedPlan) { // wenn kein Plan übergeben, produziert selber einen
       if (!this.mode.isValid() || this.persons.length <= 0 || this.duration <= 0) return;
-      this.planGenerator.getPlan(this.mode, this.duration, this.persons)
+      this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons)
         .then((response) => {
           console.log(response);
           this.viewModel = this.getPlanCardViewModel(response);
@@ -57,7 +57,7 @@ export class PlanCardComponent implements OnInit {
     var persons = new Array<{name: string, score: number}>();
 
     for (var i = 0; i < plan.allocation.length; i++) {
-      personsScore.push(this.fairnessGenerator.getFairnessIndikatorPerson(plan.allocation[i].allcation));
+      personsScore.push(this.fairnessGenerator.calculateFairness(plan.allocation[i].allcation));
     }
 
     var max_value = Math.max.apply(this, personsScore);
@@ -65,13 +65,14 @@ export class PlanCardComponent implements OnInit {
 
     if (personsScore.length === plan.allocation.length) {
       for (var index = 0; index < personsScore.length; index++) {
-        persons.push({name: plan.allocation[index].person.name, score: this.fairnessGenerator.getDurchschnittInProzent(min_value, max_value, personsScore[index])})
+        persons.push({name: plan.allocation[index].person.name, score: this.fairnessGenerator.calculateProcentValue(min_value, max_value, personsScore[index])})
       }
     }
 
     return {
       title: plan.title,
-      score: this.fairnessGenerator.getDurchschnittInProzent(min_value, max_value, this.fairnessGenerator.getDurchschnitt(personsScore)),
+      score: this.fairnessGenerator.calculateProcentValue(min_value, max_value, this.fairnessGenerator.getAverage(personsScore)) === 50
+              ? 100 : this.fairnessGenerator.calculateProcentValue(min_value, max_value, this.fairnessGenerator.getAverage(personsScore)), // TODO: Logik hier überarbeiten!
       persons: persons
     };
   }

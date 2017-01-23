@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Plan} from "../../Plan";
-import {WachtDataService} from "../wacht-data.service";
+import {SentinelDataService} from "../sentinel-data.service";
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -15,12 +15,12 @@ export class SelectedPlanDetailsComponent implements OnInit {
   private _fieldChanger: any = null;
 
   constructor(
-    private sentinelData: WachtDataService,
+    private sentinelData: SentinelDataService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this._stream = this.activatedRoute.params.subscribe((params) => this._selectedPlan = this.sentinelData.getPlan(+params['selected']));
+    this._stream = this.activatedRoute.params.subscribe((params) => this._selectedPlan = this.sentinelData.getPlanByIndex(+params['selected']));
     console.log(this._selectedPlan);
   }
 

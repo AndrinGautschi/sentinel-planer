@@ -8,7 +8,7 @@ import { Md2Module } from 'md2'; // für Date-/Timepicker
 
 import { AppComponent } from './app.component';
 
-import { WachtDataService } from './wacht-data.service';
+import { SentinelDataService } from './sentinel-data.service';
 import { SentinelDataInputComponent } from './sentinel-data-input/sentinel-data-input.component';
 import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
@@ -23,6 +23,7 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: '**', redirectTo: 'daten'} // wenn unbekannten PATH eingegeben
 ]
 
+// TODO: Prüfe, wo 'static' Methoden verwendet werden könnten und verwende diese
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,7 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
     ReactiveFormsModule
   ],
   providers: [
-    WachtDataService
+    SentinelDataService
   ],
   bootstrap: [AppComponent]
 })

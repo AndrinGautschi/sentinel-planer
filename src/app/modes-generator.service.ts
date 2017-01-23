@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import {Mode} from "../Mode";
 
 @Injectable()
-export class GeneratorModiService {
-  private modi: Mode[];
+export class ModesGeneratorService {
+  private _modes: Mode[];
 
   constructor() {
-    this.modi = [
+    this._modes = [  // TODO: Auslagern in seperates File
       new Mode("4x 4y",4,4),
       new Mode("4x 2y",4,2),
       new Mode("8x 4y",8,4),
@@ -17,8 +17,8 @@ export class GeneratorModiService {
     ];
   }
 
-  public getModi(): Mode[] {
-    return this.modi;
+  public getModes(): Mode[] {
+    return this._modes;
   }
 
 }

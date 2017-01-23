@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {WachtDataService} from "../wacht-data.service";
+import {SentinelDataService} from "../sentinel-data.service";
 import {Sentinel} from "../../Sentinel";
 import {FairnessService} from "../fairness.service";
-import {GeneratorModiService} from "../generator-modi.service";
+import {ModesGeneratorService} from "../modes-generator.service";
 import {PlanGeneratorService} from "../plan-generator.service";
 import {Mode} from "../../Mode";
 import {Router} from "@angular/router";
@@ -14,31 +14,32 @@ import {Router} from "@angular/router";
   providers: [
     FairnessService,
     PlanGeneratorService,
-    GeneratorModiService
+    ModesGeneratorService
   ]
 })
-// TODO: Observable einbauen, das auf sentinelDataService.reset() hört und die lokalen Variablen neu zuweist
+// TODO: Observable einbauen, das auf sentinelDataService.resetSentinelData() hört und die lokalen Variablen neu zuweist
 // Stellt die Übersicht der verschieden generierten Pläne dar
 export class SelectPlanComponent implements OnInit {
   private _sentinel: Sentinel;
   private _modes: Mode[];
+  public show: boolean;
 
   constructor(
-    private sentinelData: WachtDataService,
-    private modesService: GeneratorModiService,
+    private sentinelData: SentinelDataService,
+    private modesService: ModesGeneratorService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    if (this.sentinelData.wacht) {
-      this._sentinel = this.sentinelData.wacht;
-      this._modes = this.modesService.getModi();
+    if (this.sentinelData.sentinel) {
+      this._sentinel = this.sentinelData.sentinel;
+      this._modes = this.modesService.getModes();
     }
   }
 
   public select(mode: Mode) {
     console.log(this.sentinel);
-    this.router.navigate(['/konfigurieren', this.modesService.getModi().indexOf(mode)]);
+    this.router.navigate(['/konfigurieren', this.modesService.getModes().indexOf(mode)]);
   }
 
   get sentinel(): Sentinel {

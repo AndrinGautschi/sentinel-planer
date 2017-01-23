@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Sentinel } from '../../Sentinel';
-import {WachtDataService} from "../wacht-data.service";
+import {SentinelDataService} from "../sentinel-data.service";
 import {FormGroup, FormBuilder, Validators, FormArray, AbstractControl} from "@angular/forms";
 import {Person} from "../../Person";
 import {Router} from "@angular/router";
@@ -21,13 +21,14 @@ const maxSentinelDurationInHours: number = 300; // Random Zahl, um zu verhindern
 // TODO: beim zurück Navigieren auf den Sentinel Data Screen soll das bereits abgefüllte Formular angezeigt werden
 // TODO: bei Zweimaligem Durchgang (erneutes Abfüllen des Formulars) sollten alle Daten des letzten Durchganges gelöscht werden
 // TODO: Testen aller Methoden
+// TODO: Input mit einstellbarer Blockhöhe, Dienstarten etc.
 // Verwaltet das Input-Formular, auf Basis dessen die restliche Applikation ihre Arbeit verrichtet
 export class SentinelDataInputComponent implements OnInit {
   public sentinelDataForm: FormGroup;
   public loading: boolean;
 
   constructor(
-    private sentinelData: WachtDataService,
+    private sentinelData: SentinelDataService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
@@ -48,7 +49,7 @@ export class SentinelDataInputComponent implements OnInit {
 
   public onSentinelDataFormSubmit() {
     this.loading = true;
-    this.sentinelData.reset(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
+    this.sentinelData.resetSentinelData(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
     var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.groups);
     this.sentinelData.setSentinel(new Sentinel(
       new Person(this.sentinelDataForm.value.commander),

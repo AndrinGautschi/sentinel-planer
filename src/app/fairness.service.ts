@@ -2,49 +2,50 @@ import { Injectable } from '@angular/core';
 import {Allocation} from "../Allocation";
 
 // TODO: In Service auslagern?
-const dienst = 'd';
-const frei = undefined;
+const duty = 'd';
+const free = undefined;
 const reserve = 'r';
-const wertDienst = -2;
-const wertFrei = 2;
-const wertReserve = -1;
+const usefulnessDuty = -2;
+const usefulnessFree = 2;
+const usefulnessReserve = -1;
 
 @Injectable()
+// TODO: Den logischen Fehler beheben! Wenn jeder gleich viel arbeitet, ist der Durchschnitt 50, was aber nicht als Indikator für den Plan stehen darf
 export class FairnessService {
 
   constructor() { }
 
-  public getDurchschnitt(fairnessIndikatoren: Array<number>): number {
+  public getAverage(array: Array<number>): number {
     var sum = 0;
-    for(var i = 0; i < fairnessIndikatoren.length; i++) {
-      sum += fairnessIndikatoren[i];
+    for(var i = 0; i < array.length; i++) {
+      sum += array[i];
     }
-    return sum / fairnessIndikatoren.length;
+    return Math.abs(sum) / array.length;
   }
 
-  // TODO: Umbenennen
-  public getDurchschnittInProzent(min: number, max: number, durchschnitt: number): number {
-    return (Math.abs(durchschnitt) / (Math.abs(max) + Math.abs(min))) * 100;
+  public calculateProcentValue(min: number, max: number, value: number): number {
+    var temp = min ? min : 0;
+    return (Math.abs(value) / (Math.abs(max) + Math.abs(temp))) * 100; // TODO: Workaround bereinigen
   }
 
-  public getFairnessIndikatorPerson(zuteilung: string[]): number {
+  public calculateFairness(zuteilung: string[]): number {
     if (!zuteilung || zuteilung.length <= 0) return;
     var fairness = 0;
     for (var i = 0; i < zuteilung.length; i++) {
-      var dienstArt = zuteilung[i];
-      var zwischenSum = 0;
-      var anzDurchgaenge = 1;
-      var feldWert = 0;
-      if (zuteilung[i] === dienst) feldWert = wertDienst;
-      if (zuteilung[i] === frei) feldWert = wertFrei;
-      if (zuteilung[i] === reserve) feldWert = wertReserve;
-      while (i < zuteilung.length && dienstArt === zuteilung[i]) {
-        zwischenSum += (anzDurchgaenge * feldWert);
+      var dutyType = zuteilung[i];
+      var sumTemp = 0;
+      var countLoops = 1;
+      var fieldValue = 0;
+      if (zuteilung[i] === duty) fieldValue = usefulnessDuty;
+      if (zuteilung[i] === free) fieldValue = usefulnessFree;
+      if (zuteilung[i] === reserve) fieldValue = usefulnessReserve;
+      while (i < zuteilung.length && dutyType === zuteilung[i]) {
+        sumTemp += (countLoops * fieldValue);
         i++;
-        anzDurchgaenge += 1;
+        countLoops += 1;
       }
-      i--;
-      fairness += zwischenSum;
+      i--; // wenn der while-Loop verlassen wurde, ist der Counter +1 zu hoch
+      fairness += sumTemp;
     }
     return fairness;
   }

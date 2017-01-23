@@ -6,14 +6,129 @@ import {Allocation} from "../Allocation";
 import {forEach} from "@angular/router/src/utils/collection";
 import any = jasmine.any;
 
-const dienst = 'd';
+const duty = 'd'; // TODO: Service einbinden
 const reserve = 'r';
-const frei = undefined;
-const blockStandardHoehe = 4; // Jede Dienstgruppe muss durch eine Reservegruppe abgesichert sein.
+const free = undefined;
+const blockStandardHight = 4; // Jede Dienstgruppe muss durch eine Reservegruppe abgesichert sein.
 const anzBeschaeftigterProDienstart = 2; // Es sind pro aktive Aufgabe (Dienst oder Reserve) immer zwei Leute zu beschäftigen.
 
 @Injectable()
 export class PlanGeneratorService {
+  constructor() { }
+
+  public startGeneratingPlan(mode: Mode, duration: number, persons: Person[]): Promise<Plan> {
+    return new Promise((resolve, reject) => {
+      var plan: Plan = this.generatePlan(mode, duration, persons);
+
+      // Prüfung nach der Verarbeitung
+      if (plan) { // Plan abgefüllt === Verarbeitung ohne Fehler
+        resolve(plan);
+      } else {
+        reject("In der Verarbeitung ist ein schwerwiegender Fehler aufgetreten!");
+      }
+    });
+  }
+
+  // "main" Methode, die das Erstellen eines Planes koordiniert und abwickelt.
+  private generatePlan(mode: Mode, lengthXAxis: number, lengthYAxis: Person[]): Plan {
+    var array = this.createArray(lengthXAxis, lengthYAxis.length);
+
+    var exitNow = !this.isArrayValid(array) ? true : false;
+    exitNow = exitNow || !mode.isValid() ? true : false;
+    exitNow = exitNow || lengthYAxis.length <= 0 ? true : false;
+    exitNow = exitNow || lengthXAxis <= 0 ? true : false;
+    if (exitNow) return;
+
+    var yPos = 0;
+    var xPos = 0;
+    while (xPos < lengthXAxis) {
+      if (yPos  >= lengthYAxis.length) yPos -= lengthYAxis.length;
+      array = this.setBlockOnPosition(array, xPos, yPos, mode.xAxis, blockStandardHight);
+      xPos += mode.xAxis;
+      yPos += mode.yAxis;
+    }
+    if (!array) return;
+
+    return this.createPlanObject(array, mode, lengthYAxis);
+  }
+
+  private setBlockOnPosition(array, startXAxis: number, startYAxis: number, blockWidth: number, blockHeight: number): Array<String> {
+    var exitNow = !this.isArrayValid(array);
+    exitNow = exitNow || startXAxis < 0 || startXAxis >= array.length ? true : false;
+    exitNow = exitNow || startYAxis < 0 || startYAxis >= array[0].length ? true : false;
+    exitNow = exitNow || blockWidth <= 0 ? true : false;
+    exitNow = exitNow || blockHeight < 0 ? true : false;
+    if (exitNow) return;
+
+    // Logische Prüfung (Überlappung)
+    var xAxisFieldsTillEndArray = startXAxis + blockWidth > array.length ? array.length - startXAxis : 0;
+    var yAxisFieldsTillEndArray = startYAxis + blockHeight > array[0].length ? array[0].length - startYAxis : 0;
+
+
+    if (!xAxisFieldsTillEndArray && !yAxisFieldsTillEndArray) {
+      for (var y = 0; y < blockHeight; y++) { // Arbeitet sich Y-Achse für Y-Achse nach unten
+        for (var x = 0; x < blockWidth; x++) {
+          array[startXAxis + x][startYAxis + y] = this.getDutyTypeByContext(array, startXAxis + x, startYAxis + y);
+        }
+      }
+    } else {
+      var xAxisOverlayInFields: number = startXAxis + blockWidth > array.length ? (startXAxis + blockWidth) - array.length : 0;
+      var yAxisOverlayInFields: number = startYAxis + blockHeight > array[0].length ? (startYAxis + blockHeight) - array[0].length : 0;
+
+      // Wenn eine Überlappung gefunden wurde, müssen zuerst die restlichen Felder bis Ende y-Achse vergeben werden
+      array = this.setBlockOnPosition.apply(this, [array, startXAxis, startYAxis, blockWidth - xAxisOverlayInFields, blockHeight - yAxisOverlayInFields]);
+
+      // Danach vergeben wir die restlichen Felder
+      array = this.setBlockOnPosition.apply(this, [array, startXAxis, 0, blockWidth - xAxisOverlayInFields, yAxisOverlayInFields]);
+    }
+    return array;
+  }
+
+  private getDutyTypeByContext(contextArray, xAxisPos: number, yAxisPos: number): string {
+    //TODO: Die Verteilung (duty oder reserve) sollte auch davon abhängig sein, was die Person in der letzten Schicht getan hat
+    var exitNow = !this.isArrayValid(contextArray);
+    exitNow = exitNow || xAxisPos < 0 || xAxisPos >= contextArray.length ? true : false;
+    exitNow = exitNow || yAxisPos < 0 || yAxisPos >= contextArray[0].length ? true : false;
+    if (exitNow) return;
+
+    // Deklaration der Hilfsmethoden
+    const valueFieldOneAbove = function (array, xPos, yPos) {
+      var yPosOneAbove = yPos - 1 < 0 ? array[xPos].length - 1 : yPos - 1; // greift er neben den Array, kommt er unten wieder raus
+      return array[xPos][yPosOneAbove];
+    }
+    const valueFieldTwoAbove = function (array, xPos, yPos) {
+      var yPosTwoAbove = yPos - 2 < 0 ? array[xPos].length - Math.abs(yPos - 2) : yPos - 2; // greift er neben den Array, kommt er unten wieder raus
+      return array[xPos][yPosTwoAbove];
+    }
+
+    if (valueFieldOneAbove(contextArray, xAxisPos, yAxisPos) === valueFieldTwoAbove(contextArray, xAxisPos, yAxisPos)) {
+      return valueFieldOneAbove(contextArray, xAxisPos, yAxisPos) === free ? duty : reserve;
+    } else {
+      return valueFieldOneAbove(contextArray, xAxisPos, yAxisPos);
+    }
+  }
+
+  private createPlanObject(allocationsArray, mode: Mode, persons: Person[]): Plan {
+    var exitNow = !this.isArrayValid(allocationsArray) ? true : false;
+    exitNow = exitNow || allocationsArray[0].length !== persons.length ? true: false;
+    exitNow = exitNow || !mode.isValid() ? true : false;
+    if (exitNow) return;
+
+    var allocations = Array<Allocation>();
+    for (var index = 0; index < persons.length; index++) {
+      var personAllocation = Array<string>();
+      for(var hoursIndex = 0; hoursIndex < allocationsArray.length; hoursIndex++) {
+        personAllocation.push(allocationsArray[hoursIndex][index]);
+      }
+      allocations.push(new Allocation(personAllocation, persons[index]));
+    }
+    return new Plan(mode.title, mode, allocations);
+  }
+
+  private isArrayValid(array): boolean {
+    if (!(array instanceof Array) || array.length <= 0 || !(array[0] instanceof Array) || array[0].length <= 0) return false;
+    return true;
+  }
 
   // Dies ist eine von GitHub kopierte Funktion zur Erstellung mehrdimensionaler Arrays.
   private createArray(length: number, lengthInner: number): Array<String> { // Workaround mit zweitem Parameter, da TypeScript nicht eine beliebige Anz Param zulässt.
@@ -25,132 +140,4 @@ export class PlanGeneratorService {
     }
     return arr;
   }
-
-  // Prüft den für die Arbeit benötigten zweidimensionalen Array auf Korrektheit.
-  private isArrayValid(array): boolean {
-    if (!(array instanceof Array) || array.length <= 0 || !(array[0] instanceof Array) || array[0].length <= 0) return false;
-    return true;
-  }
-
-  // Evaluiert anhand der Umgebungsfelder, welche Dienstart zu wählen ist.
-  private getDienstArt(array, xAchsePos: number, yAchsePos: number): string {
-    //TODO: Die Verteilung (dienst oder reserve) sollte auch davon abhängig sein, was die Person in der letzten Schicht getan hat
-    // Prüfung der Paramter
-    var exitNow = !this.isArrayValid(array);
-        exitNow = exitNow || xAchsePos < 0 || xAchsePos >= array.length ? true : false;
-        exitNow = exitNow || yAchsePos < 0 || yAchsePos >= array[0].length ? true : false;
-    if (exitNow) return;
-
-    // Deklaration der Hilfsmethoden
-    const einsOberhalb = function (array, xPos, yPos) {
-      var yPosEinsOberhalb = yPos - 1 < 0 ? array[xPos].length - 1 : yPos - 1; // prüfe, ob ausserhalb des Arrays
-      return array[xPos][yPosEinsOberhalb];
-    }
-    const zweiOberhalb = function (array, xPos, yPos) {
-      var yPosZweiOberhalb = yPos - 2 < 0 ? array[xPos].length - Math.abs(yPos - 2) : yPos - 2; // prüfe, ob ausserhalb des Arrays
-      return array[xPos][yPosZweiOberhalb];
-    }
-
-    if (einsOberhalb(array, xAchsePos, yAchsePos) === zweiOberhalb(array, xAchsePos, yAchsePos)) {
-      return einsOberhalb(array, xAchsePos, yAchsePos) === frei ? dienst : reserve;
-    } else {
-      return einsOberhalb(array, xAchsePos, yAchsePos);
-    }
-  }
-
-  // Erhält den Einteilungsarray, die linke obere Ecke des einzuteilenden Blockes und die Blockgrösse.
-  // Beurteilt danach, ob es einen Umbruch (unteres/rechtes Ende des Einteilungsarrays) geben wird.
-  // Beschreibt den Einteilungsarray gemäss den Erkenntnissen.
-  private setzBlock(array, startXAchse: number, startYAchse: number, blockWeite: number, blockHoehe: number): Array<String> {
-    // Prüfung der Paramter
-    var exitNow = !this.isArrayValid(array);
-        exitNow = exitNow || startXAchse < 0 || startXAchse >= array.length ? true : false;
-        exitNow = exitNow || startYAchse < 0 || startYAchse >= array[0].length ? true : false;
-        exitNow = exitNow || blockWeite <= 0 || blockWeite >= array.length ? true : false;
-        exitNow = exitNow || blockHoehe <= 0 || blockHoehe >= array[0].length ? true : false;
-    if (exitNow) return;
-
-    // Logische Prüfung (Überlappung)
-    var xFelderBisEnde = startXAchse + blockWeite > array.length ? array.length - startXAchse : 0;
-    var yFelderBisEnde = startYAchse + blockHoehe > array[0].length ? array[0].length - startYAchse : 0;
-
-
-    if (!xFelderBisEnde && !yFelderBisEnde) {
-      // Geht Reihe für Reihe durch und vergibt
-      for (var y = 0; y < blockHoehe; y++) { // Arbeitet sich X-Achse für X-Achse nach unten
-        for (var x = 0; x < blockWeite; x++) {
-          array[startXAchse + x][startYAchse + y] = this.getDienstArt(array, startXAchse + x, startYAchse + y);
-        }
-      }
-    } else {
-      var xAchseUeberlappung: number = startXAchse + blockWeite > array.length ? (startXAchse + blockWeite) - array.length : 0;
-      var yAchseUeberlappung: number = startYAchse + blockHoehe > array[0].length ? (startYAchse + blockHoehe) - array[0].length : 0;
-
-      // Wenn eine Überlappung gefunden wurde, müssen zuerst die restlichen Felder bis Ende y-Achse vergeben werden
-      array = this.setzBlock.apply(this, [array, startXAchse, startYAchse, blockWeite - xAchseUeberlappung, blockHoehe - yAchseUeberlappung]);
-
-      // Danach vergeben wir die restlichen Felder
-      array = this.setzBlock.apply(this, [array, startXAchse, 0, blockWeite - xAchseUeberlappung, yAchseUeberlappung]);
-    }
-    return array;
-  }
-
-  // Erstellt ein Plan-Objekt und gibt dieses zurück
-  private erstellePlanObj(zuteilungsArray, modus: Mode, personen: Person[]): Plan {
-    // Paramter Prüfung
-    var exitNow = !this.isArrayValid(zuteilungsArray) ? true : false;
-        exitNow = exitNow || zuteilungsArray[0].length !== personen.length ? true: false;
-        exitNow = exitNow || !modus.isValid() ? true : false;
-    if (exitNow) return;
-
-    var zuteilungen = Array<Allocation>();
-    for (var index = 0; index < personen.length; index++) {
-      var personZuteilung = Array<string>();
-      for(var stundenIndenx = 0; stundenIndenx < zuteilungsArray.length; stundenIndenx++) {
-        personZuteilung.push(zuteilungsArray[stundenIndenx][index]);
-      }
-      zuteilungen.push(new Allocation(personZuteilung, personen[index]));
-    }
-    return new Plan(modus.title, modus, zuteilungen);
-  }
-
-  // "main" Methode, die das Erstellen eines Planes koordiniert und abwickelt.
-  private generatePlan(modus: Mode, laengeXAchse: number, laengeYAchse: Person[]): Plan {
-    var array = this.createArray(laengeXAchse, laengeYAchse.length);
-
-    // Prüfungen
-    var exitNow = !this.isArrayValid(array) ? true : false;
-        exitNow = exitNow || !modus.isValid() ? true : false;
-        exitNow = exitNow || laengeYAchse.length <= 0 ? true : false;
-        exitNow = exitNow || laengeXAchse <= 0 ? true : false;
-    if (exitNow) return;
-
-    var yPos = 0;
-    var xPos = 0;
-    while (xPos < laengeXAchse) {
-      if (yPos  >= laengeYAchse.length) yPos -= laengeYAchse.length;
-      array = this.setzBlock(array, xPos, yPos, modus.xAxis, blockStandardHoehe);
-      xPos += modus.xAxis;
-      yPos += modus.yAxis;
-    }
-    if (!array) return;
-
-    return this.erstellePlanObj(array, modus, laengeYAchse);
-  }
-
-  // Eine von aussen ansteuerbare Methode, die eine Promise zurückgibt, welche resolved wird, sobald der Plan generiert wurde oder rejected, wenn die Verarbeitung fehlgeschlagen ist.
-  public getPlan(modus: Mode, dauer: number, personen: Person[]): Promise<Plan> {
-    return new Promise((resolve, reject) => {
-      var plan: Plan = this.generatePlan(modus, dauer, personen);
-
-      // Prüfung nach der Verarbeitung
-      if (plan) { // Plan abgefüllt === Verarbeitung ohne Fehler
-        resolve(plan);
-      } else {
-        reject("In der Verarbeitung ist ein schwerwiegender Fehler aufgetreten!");
-      }
-    });
-  }
-
-  constructor() { }
 }
