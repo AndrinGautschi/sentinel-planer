@@ -18,33 +18,41 @@ import {Router} from "@angular/router";
   ]
 })
 // TODO: Observable einbauen, das auf sentinelDataService.reset() hört und die lokalen Variablen neu zuweist
-export class PlanAuswaehlenComponent implements OnInit {
-  get wacht(): Sentinel {
-    return this._wacht;
-  }
-
-  get modi(): Mode[] {
-    return this._modi;
-  }
-
-  private _wacht: Sentinel;
-  private _modi: Mode[];
+// Stellt die Übersicht der verschieden generierten Pläne dar
+export class SelectPlanComponent implements OnInit {
+  private _sentinel: Sentinel;
+  private _modes: Mode[];
 
   constructor(
-    private wachtDataService: WachtDataService,
-    private generatorModi: GeneratorModiService,
+    private sentinelData: WachtDataService,
+    private modesService: GeneratorModiService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    if (this.wachtDataService.wacht) {
-      this._wacht = this.wachtDataService.wacht;
-      this._modi = this.generatorModi.getModi();
+    if (this.sentinelData.wacht) {
+      this._sentinel = this.sentinelData.wacht;
+      this._modes = this.modesService.getModi();
     }
   }
 
-  public konfigurieren(modus: Mode) {
-    console.log(this.wacht);
-    this.router.navigate(['/konfigurieren', this.modi.indexOf(modus)]);
+  public select(mode: Mode) {
+    console.log(this.sentinel);
+    this.router.navigate(['/konfigurieren', this.modesService.getModi().indexOf(mode)]);
   }
+
+  get sentinel(): Sentinel {
+    return this._sentinel;
+  }
+
+  get modes(): Mode[] {
+    return this._modes;
+  }
+
+
+
+
+
+
+
 }

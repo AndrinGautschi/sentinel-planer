@@ -3,11 +3,11 @@
 </md-toolbar>
 
 <md-grid-list cols="7" rowHeight="500">
-  <md-grid-tile *ngFor="let modus of modi">
+  <md-grid-tile *ngFor="let modus of modes">
     <md-card>
-      <app-plan-card [mode]="modus" [persons]="wacht.guards" [duration]="wacht.getDurationInHours()"></app-plan-card>
+      <app-plan-card [mode]="modus" [persons]="sentinel.guards" [duration]="sentinel.getDurationInHours()"></app-plan-card>
       <md-card-actions> <!-- TODO: Button darf während des Ladens nicht angezeigt werden -->
-        <button md-button type="button" (click)="konfigurieren(modus)">Konfigurieren</button>
+        <button md-button type="button" (click)="select(modus)">Konfigurieren</button>
       </md-card-actions>
     </md-card>
   </md-grid-tile>

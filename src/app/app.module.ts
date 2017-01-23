@@ -10,13 +10,13 @@ import { AppComponent } from './app.component';
 
 import { WachtDataService } from './wacht-data.service';
 import { SentinelDataInputComponent } from './sentinel-data-input/sentinel-data-input.component';
-import { PlanAuswaehlenComponent } from './select-plan/select-plan.component';
+import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },
-  { path: 'auswaehlen', component: PlanAuswaehlenComponent },
+  { path: 'auswaehlen', component: SelectPlanComponent },
   { path: 'konfigurieren/:selected', component: SelectedPlanDetailsComponent },
   // { path: 'drucken', component: PrintComponent },
   { path: '', redirectTo: 'daten', pathMatch: 'full'}, // wenn kein PATH eingegeben
@@ -27,7 +27,7 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   declarations: [
     AppComponent,
     SentinelDataInputComponent,
-    PlanAuswaehlenComponent,
+    SelectPlanComponent,
     PlanCardComponent,
     SelectedPlanDetailsComponent
   ],
