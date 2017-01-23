@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Optional} from '@angular/core';
-import {Modus} from "../../Modus";
+import {Mode} from "../../Mode";
 import {Person} from "../../Person";
 import {FairnessService} from "../fairness.service";
 import {PlanGeneratorService} from "../plan-generator.service";
@@ -18,7 +18,7 @@ import {WachtDataService} from "../wacht-data.service";
   ]
 })
 export class PlanCardComponent implements OnInit {
-  @Input() modus: Modus;
+  @Input() modus: Mode;
   @Input() personen: Person[];
   @Input() dauer: number;
   // für den Fall, dass an anderer Stelle bereits ein Plan generiert wurde und nur noch mitgegeben werden kann.
@@ -60,7 +60,7 @@ export class PlanCardComponent implements OnInit {
 
   ngOnInit() {
     if (!this.erstellterPlan) { // wenn kein Plan übergeben, produziert selber einen
-      if (!this.modus.validModi() || this.personen.length <= 0 || this.dauer <= 0) return;
+      if (!this.modus.isValid() || this.personen.length <= 0 || this.dauer <= 0) return;
       this.generator.getPlan(this.modus, this.dauer, this.personen)
         .then((response) => {
           console.log(response);

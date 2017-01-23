@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {WachtDataService} from "../wacht-data.service";
-import {Wacht} from "../../Wacht";
+import {Sentinel} from "../../Sentinel";
 import {FairnessService} from "../fairness.service";
 import {GeneratorModiService} from "../generator-modi.service";
 import {PlanGeneratorService} from "../plan-generator.service";
-import {Modus} from "../../Modus";
+import {Mode} from "../../Mode";
 import {Router} from "@angular/router";
 
 @Component({
@@ -19,16 +19,16 @@ import {Router} from "@angular/router";
 })
 // TODO: Observable einbauen, das auf sentinelDataService.reset() hört und die lokalen Variablen neu zuweist
 export class PlanAuswaehlenComponent implements OnInit {
-  get wacht(): Wacht {
+  get wacht(): Sentinel {
     return this._wacht;
   }
 
-  get modi(): Modus[] {
+  get modi(): Mode[] {
     return this._modi;
   }
 
-  private _wacht: Wacht;
-  private _modi: Modus[];
+  private _wacht: Sentinel;
+  private _modi: Mode[];
 
   constructor(
     private wachtDataService: WachtDataService,
@@ -43,7 +43,7 @@ export class PlanAuswaehlenComponent implements OnInit {
     }
   }
 
-  public konfigurieren(modus: Modus) {
+  public konfigurieren(modus: Mode) {
     console.log(this.wacht);
     this.router.navigate(['/konfigurieren', this.modi.indexOf(modus)]);
   }

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Wacht } from '../Wacht';
+import { Sentinel } from '../Sentinel';
 import {Plan} from "../Plan";
 
 @Injectable()
 export class WachtDataService {
-  private _wacht: Wacht;
+  private _wacht: Sentinel;
   private _plaene: Plan[];
 
-  get wacht(): Wacht {
+  get wacht(): Sentinel {
     return this._wacht;
   }
 
@@ -15,7 +15,7 @@ export class WachtDataService {
     return this._plaene;
   }
 
-  public setSentinel(value: Wacht) {
+  public setSentinel(value: Sentinel) {
     this._wacht = value;
   }
 

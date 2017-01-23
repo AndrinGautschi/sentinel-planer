@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Plan} from "../Plan";
-import {Modus} from "../Modus";
+import {Mode} from "../Mode";
 import {Person} from "../Person";
 import {Allocation} from "../Allocation";
 import {forEach} from "@angular/router/src/utils/collection";
@@ -96,11 +96,11 @@ export class PlanGeneratorService {
   }
 
   // Erstellt ein Plan-Objekt und gibt dieses zurück
-  private erstellePlanObj(zuteilungsArray, modus: Modus, personen: Person[]): Plan {
+  private erstellePlanObj(zuteilungsArray, modus: Mode, personen: Person[]): Plan {
     // Paramter Prüfung
     var exitNow = !this.isArrayValid(zuteilungsArray) ? true : false;
         exitNow = exitNow || zuteilungsArray[0].length !== personen.length ? true: false;
-        exitNow = exitNow || !modus.validModi() ? true : false;
+        exitNow = exitNow || !modus.isValid() ? true : false;
     if (exitNow) return;
 
     var zuteilungen = Array<Allocation>();
@@ -115,12 +115,12 @@ export class PlanGeneratorService {
   }
 
   // "main" Methode, die das Erstellen eines Planes koordiniert und abwickelt.
-  private generatePlan(modus: Modus, laengeXAchse: number, laengeYAchse: Person[]): Plan {
+  private generatePlan(modus: Mode, laengeXAchse: number, laengeYAchse: Person[]): Plan {
     var array = this.createArray(laengeXAchse, laengeYAchse.length);
 
     // Prüfungen
     var exitNow = !this.isArrayValid(array) ? true : false;
-        exitNow = exitNow || !modus.validModi() ? true : false;
+        exitNow = exitNow || !modus.isValid() ? true : false;
         exitNow = exitNow || laengeYAchse.length <= 0 ? true : false;
         exitNow = exitNow || laengeXAchse <= 0 ? true : false;
     if (exitNow) return;
@@ -129,9 +129,9 @@ export class PlanGeneratorService {
     var xPos = 0;
     while (xPos < laengeXAchse) {
       if (yPos  >= laengeYAchse.length) yPos -= laengeYAchse.length;
-      array = this.setzBlock(array, xPos, yPos, modus.xAchse, blockStandardHoehe);
-      xPos += modus.xAchse;
-      yPos += modus.yAchse;
+      array = this.setzBlock(array, xPos, yPos, modus.xAxis, blockStandardHoehe);
+      xPos += modus.xAxis;
+      yPos += modus.yAxis;
     }
     if (!array) return;
 
@@ -139,7 +139,7 @@ export class PlanGeneratorService {
   }
 
   // Eine von aussen ansteuerbare Methode, die eine Promise zurückgibt, welche resolved wird, sobald der Plan generiert wurde oder rejected, wenn die Verarbeitung fehlgeschlagen ist.
-  public getPlan(modus: Modus, dauer: number, personen: Person[]): Promise<Plan> {
+  public getPlan(modus: Mode, dauer: number, personen: Person[]): Promise<Plan> {
     return new Promise((resolve, reject) => {
       var plan: Plan = this.generatePlan(modus, dauer, personen);
 

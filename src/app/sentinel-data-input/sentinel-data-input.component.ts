@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Wacht } from '../../Wacht';
+import { Sentinel } from '../../Sentinel';
 import {WachtDataService} from "../wacht-data.service";
 import {FormGroup, FormBuilder, Validators, FormArray, AbstractControl} from "@angular/forms";
 import {Person} from "../../Person";
@@ -50,7 +50,7 @@ export class SentinelDataInputComponent implements OnInit {
     this.loading = true;
     this.sentinelData.reset(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
     var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.groups);
-    this.sentinelData.setSentinel(new Wacht(
+    this.sentinelData.setSentinel(new Sentinel(
       new Person(this.sentinelDataForm.value.commander),
       new Person(this.sentinelDataForm.value.deputy),
       this.sentinelDataForm.value.datefrom,
@@ -107,7 +107,7 @@ export class SentinelDataInputComponent implements OnInit {
   public fillAndNext() {
     var guards: Array<Person> = [new Person('Andrin1'), new Person('Andrin2'), new Person('Andrin3'), new Person('Andrin4'), new Person('Andrin5'), new Person('Andrin6'), new Person('Andrin7'), new Person('Andrin8'), new Person('Andrin9')];
     var dateTo:Date = new Date(new Date().setDate(new Date().getDate() +1));
-    this.sentinelData.setSentinel(new Wacht(
+    this.sentinelData.setSentinel(new Sentinel(
       new Person('Chef'),
       new Person('Halbechef'),
       new Date(),
