@@ -25,15 +25,12 @@ const maxSentinelDurationInHours: number = 300; // Random Zahl, um zu verhindern
 // Verwaltet das Input-Formular, auf Basis dessen die restliche Applikation ihre Arbeit verrichtet
 export class SentinelDataInputComponent implements OnInit {
   public sentinelDataForm: FormGroup;
-  public loading: boolean;
 
   constructor(
     private sentinelData: SentinelDataService,
     private formBuilder: FormBuilder,
     private router: Router
-  ) {
-    this.loading = false;
-  }
+  ) { }
 
   ngOnInit() {
     this.sentinelDataForm = this.formBuilder.group({
@@ -48,7 +45,6 @@ export class SentinelDataInputComponent implements OnInit {
   }
 
   public onSentinelDataFormSubmit() {
-    this.loading = true;
     this.sentinelData.resetSentinelData(); // Damit allfällige Daten eines vorgängigen Durchganges nicht Fehler produzieren
     var people: Array<Person> = this.extractPeopleFromInputForm(this.sentinelDataForm.value.groups);
     this.sentinelData.setSentinel(new Sentinel(
@@ -58,7 +54,6 @@ export class SentinelDataInputComponent implements OnInit {
       this.sentinelDataForm.value.dateto,
       people
     ));
-    this.loading = false;
     this.router.navigateByUrl('/auswaehlen');
   }
 
