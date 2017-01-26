@@ -48,7 +48,7 @@ export class PlanCardComponent implements OnInit {
     }
   }
 
-  private getPlanCardViewModel(plan: Plan): PlanCardViewModel {
+  public getPlanCardViewModel(plan: Plan): PlanCardViewModel {
     var personsScore = this.fairness.getPersonsScoreInProcent(plan);
     var planScore = this.fairness.getPlanScoreInProcent(personsScore);
 

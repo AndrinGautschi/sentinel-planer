@@ -1,7 +1,6 @@
 import {Injectable, Inject} from '@angular/core';
 import {ConstantsService} from "./constants.service";
 import {Plan} from "../Plan";
-import {Allocation} from "../Allocation";
 import {Person} from "../Person";
 
 @Injectable()
@@ -14,14 +13,11 @@ export class FairnessService {
   public getPersonsScoreInProcent(plan: Plan): Array<{person: Person, score: number}> {
     var returnArray = Array<{person: Person, score: number}>();
     var scoresPerPerson = Array<number>();
-
     for (var index = 0; index < plan.allocations.length; index++) {
       scoresPerPerson.push(this.calculateScoreOfArray(plan.allocations[index].allcation));
     }
     var max = Math.max.apply(this, scoresPerPerson);
-
     if (plan.allocations.length !== scoresPerPerson.length) throw "Something went wrong"; // TODO: Exception Handling
-
     for (var index = 0; index < plan.allocations.length; index++) {
       returnArray.push({person: plan.allocations[index].person,
                         score: this.calculateProcentValue(scoresPerPerson[index], max)});
