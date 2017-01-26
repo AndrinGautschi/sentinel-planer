@@ -1,45 +1,64 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Inject} from '@angular/core';
+import {ConstantsService} from "./constants.service";
+import {Plan} from "../Plan";
 import {Allocation} from "../Allocation";
-
-// TODO: In Service auslagern?
-const duty = 'd';
-const free = undefined;
-const reserve = 'r';
-const usefulnessDuty = -2;
-const usefulnessFree = 2;
-const usefulnessReserve = -1;
+import {Person} from "../Person";
 
 @Injectable()
-// TODO: Den logischen Fehler beheben! Wenn jeder gleich viel arbeitet, ist der Durchschnitt 50, was aber nicht als Indikator für den Plan stehen darf
+// TODO: Logik verfeinern --> Fairness wird niedriger, wenn Blöcke kleiner werden zum Beispiel
 export class FairnessService {
+  constructor(
+    @Inject(ConstantsService) private constants // Injecting von einem Service in einen anderen muss so gemacht werden.
+  ) { }
 
-  constructor() { }
+  public getPersonsScoreInProcent(plan: Plan): Array<{person: Person, score: number}> {
+    var returnArray = Array<{person: Person, score: number}>();
+    var scoresPerPerson = Array<number>();
 
-  public getAverage(array: Array<number>): number {
+    for (var index = 0; index < plan.allocations.length; index++) {
+      scoresPerPerson.push(this.calculateScoreOfArray(plan.allocations[index].allcation));
+    }
+    var max = Math.max.apply(this, scoresPerPerson);
+
+    if (plan.allocations.length !== scoresPerPerson.length) throw "Something went wrong"; // TODO: Exception Handling
+
+    for (var index = 0; index < plan.allocations.length; index++) {
+      returnArray.push({person: plan.allocations[index].person,
+                        score: this.calculateProcentValue(scoresPerPerson[index], max)});
+    }
+    return returnArray;
+  }
+
+  public getPlanScoreInProcent(personsScoreInProcent: Array<{person: Person, score: number}>): number {
+    var max = Math.max.apply(this, personsScoreInProcent.map(function(o){return o.score}));
+    var min = Math.min.apply(this, personsScoreInProcent.map(function(o){return o.score}));
+    return this.calculateProcentValue(min, max);
+  }
+
+  private getSumOfArray(array: Array<number>): number {
     var sum = 0;
     for(var i = 0; i < array.length; i++) {
-      sum += array[i];
+      if (typeof array[i] === 'number') sum += array[i];
     }
-    return Math.abs(sum) / array.length;
+    return sum;
   }
 
-  public calculateProcentValue(min: number, max: number, value: number): number {
-    var temp = min ? min : 0;
-    return (Math.abs(value) / (Math.abs(max) + Math.abs(temp))) * 100; // TODO: Workaround bereinigen
+  private calculateProcentValue(value: number, from: number): number {
+    return (Math.abs(value) / Math.abs(from)) * 100;
   }
 
-  public calculateFairness(zuteilung: string[]): number {
-    if (!zuteilung || zuteilung.length <= 0) return;
+  private calculateScoreOfArray(allocation: string[]): number { // TODO: Throwing Exception
+    if (!allocation || allocation.length <= 0) return;
     var fairness = 0;
-    for (var i = 0; i < zuteilung.length; i++) {
-      var dutyType = zuteilung[i];
+    for (var i = 0; i < allocation.length; i++) {
+      var dutyType = allocation[i];
       var sumTemp = 0;
       var countLoops = 1;
       var fieldValue = 0;
-      if (zuteilung[i] === duty) fieldValue = usefulnessDuty;
-      if (zuteilung[i] === free) fieldValue = usefulnessFree;
-      if (zuteilung[i] === reserve) fieldValue = usefulnessReserve;
-      while (i < zuteilung.length && dutyType === zuteilung[i]) {
+      if (allocation[i] === this.constants.duty) fieldValue = this.constants.dutyWorth;
+      if (allocation[i] === this.constants.free) fieldValue = this.constants.freeWorth;
+      if (allocation[i] === this.constants.reserve) fieldValue = this.constants.reserveWorth;
+      while (i < allocation.length && dutyType === allocation[i]) {
         sumTemp += (countLoops * fieldValue);
         i++;
         countLoops += 1;

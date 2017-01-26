@@ -49,9 +49,9 @@ export class SelectedPlanDetailsComponent implements OnInit {
     var selectedPlan = selectedPlan;
     return function (field2: {x: number, y: number}): Plan {
       var field2 = field2;
-      var temp = selectedPlan.allocation[field1.y].allcation[field1.x];
-      selectedPlan.allocation[field1.y].allcation[field1.x] = selectedPlan.allocation[field2.y].allcation[field2.x];
-      selectedPlan.allocation[field2.y].allcation[field2.x] = temp;
+      var temp = selectedPlan.allocations[field1.y].allcation[field1.x];
+      selectedPlan.allocations[field1.y].allcation[field1.x] = selectedPlan.allocations[field2.y].allcation[field2.x];
+      selectedPlan.allocations[field2.y].allcation[field2.x] = temp;
       return selectedPlan;
     }
   }

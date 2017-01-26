@@ -8,7 +8,7 @@ export class Plan {
   constructor(
     private _title: string,
     private _mode: Mode,
-    private _allocation: Allocation[]
+    private _allocations: Allocation[]
   ){ }
 
   get title(): string {
@@ -19,8 +19,8 @@ export class Plan {
     return this._mode;
   }
 
-  get allocation(): Allocation[] {
-    return this._allocation;
+  get allocations(): Allocation[] {
+    return this._allocations;
   }
 
 }

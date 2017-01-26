@@ -9,11 +9,7 @@ import {SentinelDataService} from "../../sentinel-data.service";
 @Component({
   selector: 'app-plan-card',
   templateUrl: 'plan-card.component.html',
-  styleUrls: ['plan-card.component.css'],
-  providers: [
-    FairnessService,
-    PlanGeneratorService
-  ]
+  styleUrls: ['plan-card.component.css']
 })
 // Verwaltet die zusammenfassende Ansicht für einen Plan
 export class PlanCardComponent implements OnInit {
@@ -28,7 +24,7 @@ export class PlanCardComponent implements OnInit {
   public viewModel: PlanCardViewModel;
 
   constructor(
-    private fairnessGenerator: FairnessService,
+    private fairness: FairnessService,
     private planGenerator: PlanGeneratorService,
     private sentinelData: SentinelDataService
   ) { }
@@ -53,27 +49,13 @@ export class PlanCardComponent implements OnInit {
   }
 
   private getPlanCardViewModel(plan: Plan): PlanCardViewModel {
-    var personsScore = new Array<number>();
-    var persons = new Array<{name: string, score: number}>();
-
-    for (var i = 0; i < plan.allocation.length; i++) {
-      personsScore.push(this.fairnessGenerator.calculateFairness(plan.allocation[i].allcation));
-    }
-
-    var max_value = Math.max.apply(this, personsScore);
-    var min_value = Math.min.apply(this, personsScore);
-
-    if (personsScore.length === plan.allocation.length) {
-      for (var index = 0; index < personsScore.length; index++) {
-        persons.push({name: plan.allocation[index].person.name, score: this.fairnessGenerator.calculateProcentValue(min_value, max_value, personsScore[index])})
-      }
-    }
+    var personsScore = this.fairness.getPersonsScoreInProcent(plan);
+    var planScore = this.fairness.getPlanScoreInProcent(personsScore);
 
     return {
       title: plan.title,
-      score: this.fairnessGenerator.calculateProcentValue(min_value, max_value, this.fairnessGenerator.getAverage(personsScore)) === 50
-              ? 100 : this.fairnessGenerator.calculateProcentValue(min_value, max_value, this.fairnessGenerator.getAverage(personsScore)), // TODO: Logik hier überarbeiten!
-      persons: persons
+      score: planScore,
+      persons: personsScore
     };
   }
 }
@@ -82,7 +64,7 @@ export interface PlanCardViewModel {
   title: string;
   score: number; // Wertung des Planes in Prozent
   persons: Array<{
-    name: string,
+    person: Person,
     score: number // Wertung der Person in Prozent
   }>;
 }

@@ -12,6 +12,6 @@
   <!-- TODO: Aufruf so gestalten, dass bei jeder Mal ViewReload die Prozentwerte neu berechnet werden -->
   <md-progress-circle [value]="viewModel.score" mode="determinate" ></md-progress-circle>
   <div *ngFor="let person of viewModel.persons">
-    <label for="progressBar{{index}}">{{person.name}}</label><md-progress-bar id="progressBar{{index}}" [value]="person.score"></md-progress-bar>
+    <label for="progressBar{{index}}">{{person.person.name}}</label><md-progress-bar id="progressBar{{index}}" [value]="person.score"></md-progress-bar>
   </div>
 </div>
