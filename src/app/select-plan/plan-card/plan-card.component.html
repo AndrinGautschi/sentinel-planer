@@ -1,17 +1,21 @@
-
-<div *ngIf="loading">
-  <div class="loader">
-    <span class="dot dot_1"></span>
-    <span class="dot dot_2"></span>
-    <span class="dot dot_3"></span>
-    <span class="dot dot_4"></span>
+<md-card>
+  <div *ngIf="loading">
+    <div class="loader">
+      <span class="dot dot_1"></span>
+      <span class="dot dot_2"></span>
+      <span class="dot dot_3"></span>
+      <span class="dot dot_4"></span>
+    </div>
   </div>
-</div>
-<div *ngIf="!loading">
-  <!-- TODO: Prozentangabe für Fairness-Indikator -->
-  <!-- TODO: Aufruf so gestalten, dass bei jeder Mal ViewReload die Prozentwerte neu berechnet werden -->
-  <md-progress-circle [value]="getPlanCardViewModel().score" mode="determinate" ></md-progress-circle>
-  <div *ngFor="let person of viewModel.persons">
-    <label for="progressBar{{index}}">{{person.person.name}}</label><md-progress-bar id="progressBar{{index}}" [value]="person.score"></md-progress-bar>
+  <div *ngIf="!loading">
+    <!-- TODO: Prozentangabe für Fairness-Indikator -->
+    <!-- TODO: Aufruf so gestalten, dass bei jeder Mal ViewReload die Prozentwerte neu berechnet werden -->
+    <md-progress-circle [value]="localPlan.score" mode="determinate" ></md-progress-circle>
+    <div *ngFor="let allocation of localPlan.allocations">
+      <label for="progressBar{{index}}">{{allocation.person.name}}</label><md-progress-bar id="progressBar{{index}}" [value]="allocation.scoreInPercent"></md-progress-bar>
+    </div>
+    <md-card-actions>
+      <button md-button type="button" (click)="select()">Konfigurieren</button>
+    </md-card-actions>
   </div>
-</div>
+</md-card>

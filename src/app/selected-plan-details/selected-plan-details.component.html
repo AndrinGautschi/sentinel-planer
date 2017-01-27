@@ -7,6 +7,6 @@
   <!-- For each row -->
   <div *ngFor="let allocation of selectedPlan.allocations; let yIndex = index">
     <!-- For each col -->
-    <div class="plan-field" [ngClass]="getFieldClass(field)" *ngFor="let field of allocation.allcation; let xIndex = index" (click)="fieldClicked(xIndex, yIndex)"></div>
+    <div class="plan-field" [ngClass]="getFieldClass(field)" *ngFor="let field of allocation.allocation; let xIndex = index" (click)="fieldClicked(xIndex, yIndex)"></div>
   </div>
 </div>

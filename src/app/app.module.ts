@@ -14,7 +14,6 @@ import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 import {ConstantsService} from "./constants.service";
-import {FairnessService} from "./fairness.service";
 import {PlanGeneratorService} from "./plan-generator.service";
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
@@ -48,7 +47,6 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   providers: [
     SentinelDataService,
     ConstantsService,
-    FairnessService,
     PlanGeneratorService
   ],
   bootstrap: [AppComponent]
