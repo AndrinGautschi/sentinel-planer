@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Plan} from "../../Plan";
 import {SentinelDataService} from "../sentinel-data.service";
 import 'rxjs/add/operator/switchMap';
+import {PlatformLocation} from "@angular/common";
 
 @Component({
   selector: 'app-selected-plan-details',
@@ -49,9 +50,9 @@ export class SelectedPlanDetailsComponent implements OnInit {
     var selectedPlan = selectedPlan;
     return function (field2: {x: number, y: number}): Plan {
       var field2 = field2;
-      var temp = selectedPlan.allocation[field1.y].allcation[field1.x];
-      selectedPlan.allocation[field1.y].allcation[field1.x] = selectedPlan.allocation[field2.y].allcation[field2.x];
-      selectedPlan.allocation[field2.y].allcation[field2.x] = temp;
+      var temp = selectedPlan.allocations[field1.y].allocation[field1.x];
+      selectedPlan.allocations[field1.y].allocation[field1.x] = selectedPlan.allocations[field2.y].allocation[field2.x];
+      selectedPlan.allocations[field2.y].allocation[field2.x] = temp;
       return selectedPlan;
     }
   }

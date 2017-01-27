@@ -20,7 +20,6 @@ export class PlanGeneratorService {
     return new Promise((resolve, reject) => {
       var plan: Plan = this.generatePlan(mode, duration, persons);
 
-      // Prüfung nach der Verarbeitung
       if (plan) { // Plan abgefüllt === Verarbeitung ohne Fehler
         resolve(plan);
       } else {

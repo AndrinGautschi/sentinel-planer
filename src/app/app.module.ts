@@ -13,6 +13,8 @@ import { SentinelDataInputComponent } from './sentinel-data-input/sentinel-data-
 import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
+import {ConstantsService} from "./constants.service";
+import {PlanGeneratorService} from "./plan-generator.service";
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },
@@ -24,6 +26,8 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
 ]
 
 // TODO: Prüfe, wo 'static' Methoden verwendet werden könnten und verwende diese
+// TODO: Prüfen, ob 'let' anstelle von 'var'
+// TODO: Error Handling Einbauen mit 'throw' und 'catch'
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +45,9 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
     ReactiveFormsModule
   ],
   providers: [
-    SentinelDataService
+    SentinelDataService,
+    ConstantsService,
+    PlanGeneratorService
   ],
   bootstrap: [AppComponent]
 })

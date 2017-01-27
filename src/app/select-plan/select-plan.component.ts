@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SentinelDataService} from "../sentinel-data.service";
 import {Sentinel} from "../../Sentinel";
-import {FairnessService} from "../fairness.service";
 import {ModesGeneratorService} from "../modes-generator.service";
 import {PlanGeneratorService} from "../plan-generator.service";
 import {Mode} from "../../Mode";
@@ -12,7 +11,6 @@ import {Router} from "@angular/router";
   templateUrl: 'select-plan.component.html',
   styleUrls: ['select-plan.component.css'],
   providers: [
-    FairnessService,
     PlanGeneratorService,
     ModesGeneratorService
   ]
@@ -37,11 +35,6 @@ export class SelectPlanComponent implements OnInit {
     }
   }
 
-  public select(mode: Mode) {
-    console.log(this.sentinel);
-    this.router.navigate(['/konfigurieren', this.modesService.getModes().indexOf(mode)]);
-  }
-
   get sentinel(): Sentinel {
     return this._sentinel;
   }
@@ -49,11 +42,4 @@ export class SelectPlanComponent implements OnInit {
   get modes(): Mode[] {
     return this._modes;
   }
-
-
-
-
-
-
-
 }

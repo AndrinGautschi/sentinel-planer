@@ -5,7 +5,11 @@ import {Plan} from "../Plan";
 @Injectable()
 export class SentinelDataService {
   private _sentinel: Sentinel;
-  private _plans: Plan[];
+  private _plans: Plan[]
+
+  // Damit die Views bei 'zurück' oder 'weitergehen' (Browser back or forward) updated bleiben
+  private _plansAreGenerated: boolean = false;
+  private _sentinelDataInputForm;
 
   constructor() {
     this._plans = new Array<Plan>();
@@ -29,6 +33,22 @@ export class SentinelDataService {
     this._sentinel = value;
   }
 
+  public setPlansAreGenerated(value: boolean) {
+    this._plansAreGenerated = value;
+  }
+
+  public setSentinelDataInputForm(value) {
+    this._sentinelDataInputForm = value;
+  }
+
+  get plansAreGenerated(): boolean {
+    return this._plansAreGenerated;
+  }
+
+  get sentinelDataInputForm() {
+    return this._sentinelDataInputForm;
+  }
+
   get sentinel(): Sentinel {
     return this._sentinel;
   }
@@ -36,5 +56,4 @@ export class SentinelDataService {
   get plans(): Plan[] {
     return this._plans;
   }
-
 }

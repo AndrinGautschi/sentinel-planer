@@ -1,14 +1,13 @@
 import {Mode} from "./Mode";
 import {Allocation} from "./Allocation";
-/**
- * Created by Andrin on 16.01.2017.
- */
+import {FAIRNESS} from "./app/util/fairness";
+import {MATH_UTIL} from "./app/util/math-util";
 
 export class Plan {
   constructor(
     private _title: string,
     private _mode: Mode,
-    private _allocation: Allocation[]
+    private _allocations: Allocation[]
   ){ }
 
   get title(): string {
@@ -19,8 +18,19 @@ export class Plan {
     return this._mode;
   }
 
-  get allocation(): Allocation[] {
-    return this._allocation;
+  get allocations(): Allocation[] {
+    return this._allocations;
   }
 
+  get score(): number { // Setzt beim Aufruf (Ressourcen sparen) alle dem Plan angehängten Allocation-Scores ebenfalls
+    var allocationScores = this._allocations.map(function(allocation){return allocation.score;});
+    var max = Math.max.apply(this, allocationScores);
+    var min = Math.min.apply(this, allocationScores);
+    this._allocations.forEach(
+      function(allocation: Allocation){
+        allocation.setScoreInPercent(MATH_UTIL.getPercent(allocation.score, max));
+      });
+    return MATH_UTIL.getPercent(min, max);
+  }
 }
+
