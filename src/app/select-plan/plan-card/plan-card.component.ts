@@ -41,7 +41,6 @@ export class PlanCardComponent implements OnInit {
           this.sentinelData.addPlan(response);
           this.sentinelData.setPlansAreGenerated(true); // sollte der Nutzer einen Plan auswählen und zurück gehen,
                                                         // müssen die Pläne neu initialisiert werden.
-
           this.localPlan = response;
           this.loading = false;
         })
