@@ -17,13 +17,8 @@ export class SelectedPlanDetailsComponent implements OnInit {
 
   constructor(
     private sentinelData: SentinelDataService,
-    private activatedRoute: ActivatedRoute,
-    private location: PlatformLocation
-  ) {
-    this.location.onPopState(() => { // Wenn zurück geklickt wird,
-      console.log("Back klicked");
-    })
-  }
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this._stream = this.activatedRoute.params.subscribe((params) => this._selectedPlan = this.sentinelData.getPlanByIndex(+params['selected']));

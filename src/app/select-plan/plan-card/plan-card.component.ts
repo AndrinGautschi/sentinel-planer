@@ -18,8 +18,6 @@ export class PlanCardComponent implements OnInit {
   @Input() mode: Mode;
   @Input() persons: Person[];
   @Input() duration: number;
-  @Input() @Optional() initializedPlan: Plan; // für den Fall, dass an anderer Stelle bereits ein Plan generiert wurde
-                                              // und nur noch mitgegeben werden kann.
 
   public loading: boolean = true;
   public failure: {isFehler: boolean, exception: string} = {isFehler: false, exception: ''};
@@ -33,11 +31,17 @@ export class PlanCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (!this.initializedPlan) { // wenn kein Plan übergeben, produziert selber einen
+    if (this.sentinelData.plansAreGenerated) {
+      this.localPlan = this.sentinelData.getPlanByIndex(this.modesService.getModes().indexOf(this.mode));
+      this.loading = false;
+    } else {
       if (!this.mode.isValid() || this.persons.length <= 0 || this.duration <= 0) return; // TODO: Throw Error
       this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons)
         .then((response) => {
           this.sentinelData.addPlan(response);
+          this.sentinelData.setPlansAreGenerated(true); // sollte der Nutzer einen Plan auswählen und zurück gehen,
+                                                        // müssen die Pläne neu initialisiert werden.
+
           this.localPlan = response;
           this.loading = false;
         })

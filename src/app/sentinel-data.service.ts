@@ -6,6 +6,7 @@ import {Plan} from "../Plan";
 export class SentinelDataService {
   private _sentinel: Sentinel;
   private _plans: Plan[];
+  private _plansAreGenerated: boolean = false;
 
   constructor() {
     this._plans = new Array<Plan>();
@@ -27,6 +28,14 @@ export class SentinelDataService {
 
   public setSentinel(value: Sentinel) {
     this._sentinel = value;
+  }
+
+  public setPlansAreGenerated(value: boolean) {
+    this._plansAreGenerated = value;
+  }
+
+  get plansAreGenerated(): boolean {
+    return this._plansAreGenerated;
   }
 
   get sentinel(): Sentinel {
