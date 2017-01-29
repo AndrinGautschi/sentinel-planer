@@ -1,9 +1,11 @@
 <md-toolbar>
   <span>Plan auswählen</span>
 </md-toolbar>
-
-<md-grid-list cols="7" rowHeight="500">
-  <md-grid-tile *ngFor="let modus of modes">
-    <app-plan-card [mode]="modus" [persons]="sentinel.guards" [duration]="sentinel.getDurationInHours()"></app-plan-card>
-  </md-grid-tile>
-</md-grid-list>
+<div *ngIf="show">
+  <app-life-customize-card></app-life-customize-card>
+  <md-grid-list cols="7" rowHeight="500">
+    <md-grid-tile *ngFor="let modus of modes">
+      <app-plan-card [mode]="modus" [persons]="sentinel.guards" [duration]="sentinel.getDurationInHours()"></app-plan-card>
+    </md-grid-tile>
+  </md-grid-list>
+</div>

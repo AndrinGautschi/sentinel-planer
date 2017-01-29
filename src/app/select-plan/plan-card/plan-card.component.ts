@@ -36,7 +36,7 @@ export class PlanCardComponent implements OnInit {
       this.loading = false;
     } else {
       if (!this.mode.isValid() || this.persons.length <= 0 || this.duration <= 0) return; // TODO: Throw Error
-      this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons)
+      this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons) // TODO: Renaming persons to guards
         .then((response) => {
           this.sentinelData.addPlan(response);
           this.sentinelData.setPlansAreGenerated(true); // sollte der Nutzer einen Plan auswählen und zurück gehen,

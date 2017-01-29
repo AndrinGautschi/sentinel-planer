@@ -20,7 +20,7 @@ import {Router} from "@angular/router";
 export class SelectPlanComponent implements OnInit {
   private _sentinel: Sentinel;
   private _modes: Mode[];
-  public show: boolean;
+  public show: boolean = false;
 
   constructor(
     private sentinelData: SentinelDataService,
@@ -30,6 +30,7 @@ export class SelectPlanComponent implements OnInit {
 
   ngOnInit() {
     if (this.sentinelData.sentinel) {
+      this.show = true;
       this._sentinel = this.sentinelData.sentinel;
       this._modes = this.modesService.getModes();
     }

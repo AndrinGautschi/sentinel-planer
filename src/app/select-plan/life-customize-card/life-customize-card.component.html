@@ -1,0 +1,11 @@
+<md-card>
+  <div>
+    <label for="blocklenghtslider">Block Länge (x-Achse)</label>
+    <md-slider id="blocklenghtslider" thumbLabel min="1" max="{{getMaxBlockWidth()}}" step="1" [(value)]="sliderBlockLength"></md-slider>
+  </div>
+  <div>
+    <label for="blockheightslider">Block Höhe (Verschiebung y-Achse)</label>
+    <md-slider id="blockheightslider" thumbLabel min="1" max="{{getMaxBlockHeight()}}" step="1" [(value)]="sliderBlockLength"></md-slider>
+  </div>
+  <md-progress-circle [value]="customizedPlan.score" mode="determinate"></md-progress-circle>
+</md-card>

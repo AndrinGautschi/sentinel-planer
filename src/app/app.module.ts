@@ -15,6 +15,7 @@ import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 import {ConstantsService} from "./constants.service";
 import {PlanGeneratorService} from "./plan-generator.service";
+import { LifeCustomizeCardComponent } from './select-plan/life-customize-card/life-customize-card.component';
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },
@@ -34,7 +35,8 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
     SentinelDataInputComponent,
     SelectPlanComponent,
     PlanCardComponent,
-    SelectedPlanDetailsComponent
+    SelectedPlanDetailsComponent,
+    LifeCustomizeCardComponent
   ],
   imports: [
     BrowserModule,
