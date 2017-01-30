@@ -1,11 +1,15 @@
 <md-card>
   <div>
-    <label for="blocklenghtslider">Block Länge (x-Achse)</label>
-    <md-slider id="blocklenghtslider" thumbLabel min="1" max="{{getMaxBlockWidth()}}" step="1" [(value)]="sliderBlockLength"></md-slider>
+    <md-select placeholder="Block Länge" [(ngModel)]="selectedValueLength">
+      <md-option *ngFor="let select of getSelectValuesBlockWidth(), let i = index" [value]="i">{{i}}</md-option>
+    </md-select>
   </div>
   <div>
-    <label for="blockheightslider">Block Höhe (Verschiebung y-Achse)</label>
-    <md-slider id="blockheightslider" thumbLabel min="1" max="{{getMaxBlockHeight()}}" step="1" [(value)]="sliderBlockLength"></md-slider>
+    <md-select placeholder="Block y-Verschiebung" [(ngModel)]="selectedValueHeight">
+      <md-option *ngFor="let select of getSelectValuesBlockHeight(), let i = index" [value]="i">{{i}}</md-option>
+    </md-select>
   </div>
-  <md-progress-circle [value]="customizedPlan.score" mode="determinate"></md-progress-circle>
+  <md-card-actions>
+    <button md-button (click)="generateNewPlan()">GENERIERE NEUEN PLAN</button>
+  </md-card-actions>
 </md-card>
