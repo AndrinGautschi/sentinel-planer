@@ -1,0 +1,15 @@
+<md-card>
+  <div>
+    <md-select placeholder="Block Länge" [(ngModel)]="selectedValueLength">
+      <md-option *ngFor="let select of getSelectValuesBlockWidth(), let i = index" [value]="i">{{i}}</md-option>
+    </md-select>
+  </div>
+  <div>
+    <md-select placeholder="Block y-Verschiebung" [(ngModel)]="selectedValueHeight">
+      <md-option *ngFor="let select of getSelectValuesBlockHeight(), let i = index" [value]="i">{{i}}</md-option>
+    </md-select>
+  </div>
+  <md-card-actions>
+    <button md-button (click)="generateNewPlan()">GENERIERE NEUEN PLAN</button>
+  </md-card-actions>
+</md-card>

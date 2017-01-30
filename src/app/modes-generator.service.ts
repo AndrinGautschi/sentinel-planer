@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Mode} from "../Mode";
 
 @Injectable()
-export class ModesGeneratorService {
+export class ModesGeneratorService { // TODO: Renaming in ModesService
   private _modes: Mode[];
 
   constructor() {
@@ -19,6 +19,10 @@ export class ModesGeneratorService {
 
   public getModes(): Mode[] {
     return this._modes;
+  }
+
+  public addMode(mode: Mode): void {
+    this._modes.push(mode);
   }
 
 }

@@ -3,7 +3,6 @@ import {ActivatedRoute} from "@angular/router";
 import {Plan} from "../../Plan";
 import {SentinelDataService} from "../sentinel-data.service";
 import 'rxjs/add/operator/switchMap';
-import {PlatformLocation} from "@angular/common";
 
 @Component({
   selector: 'app-selected-plan-details',

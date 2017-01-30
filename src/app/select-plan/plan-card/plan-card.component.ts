@@ -31,16 +31,16 @@ export class PlanCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.sentinelData.plansAreGenerated) {
+    if (this.sentinelData.plansAreGenerated[this.modesService.getModes().indexOf(this.mode)]) {
       this.localPlan = this.sentinelData.getPlanByIndex(this.modesService.getModes().indexOf(this.mode));
       this.loading = false;
     } else {
       if (!this.mode.isValid() || this.persons.length <= 0 || this.duration <= 0) return; // TODO: Throw Error
-      this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons)
+      this.planGenerator.startGeneratingPlan(this.mode, this.duration, this.persons) // TODO: Renaming persons to guards
         .then((response) => {
           this.sentinelData.addPlan(response);
-          this.sentinelData.setPlansAreGenerated(true); // sollte der Nutzer einen Plan auswählen und zurück gehen,
-                                                        // müssen die Pläne neu initialisiert werden.
+          this.sentinelData.setPlansAreGenerated(this.modesService.getModes().indexOf(this.mode), true); // sollte der Nutzer einen Plan auswählen und zurück gehen,
+                                                                                                         // müssen die Pläne neu initialisiert werden.
           this.localPlan = response;
           this.loading = false;
         })

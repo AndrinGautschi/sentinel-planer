@@ -8,7 +8,7 @@ export class SentinelDataService {
   private _plans: Plan[]
 
   // Damit die Views bei 'zurück' oder 'weitergehen' (Browser back or forward) updated bleiben
-  private _plansAreGenerated: boolean = false;
+  private _plansAreGenerated: Array<boolean> = Array<boolean>();
   private _sentinelDataInputForm;
 
   constructor() {
@@ -33,15 +33,16 @@ export class SentinelDataService {
     this._sentinel = value;
   }
 
-  public setPlansAreGenerated(value: boolean) {
-    this._plansAreGenerated = value;
+  public setPlansAreGenerated(index: number, value: boolean) {
+    if (index < this._plansAreGenerated.length || index > this._plansAreGenerated.length) return;
+    this._plansAreGenerated[index] = value;
   }
 
   public setSentinelDataInputForm(value) {
     this._sentinelDataInputForm = value;
   }
 
-  get plansAreGenerated(): boolean {
+  get plansAreGenerated(): Array<boolean> {
     return this._plansAreGenerated;
   }
 

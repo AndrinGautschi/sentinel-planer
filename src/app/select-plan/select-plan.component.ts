@@ -11,35 +11,27 @@ import {Router} from "@angular/router";
   templateUrl: 'select-plan.component.html',
   styleUrls: ['select-plan.component.css'],
   providers: [
-    PlanGeneratorService,
-    ModesGeneratorService
+    PlanGeneratorService
   ]
 })
-// TODO: Observable einbauen, das auf sentinelDataService.resetSentinelData() hört und die lokalen Variablen neu zuweist
 // Stellt die Übersicht der verschieden generierten Pläne dar
 export class SelectPlanComponent implements OnInit {
   private _sentinel: Sentinel;
-  private _modes: Mode[];
-  public show: boolean;
+  public show: boolean = false;
 
   constructor(
-    private sentinelData: SentinelDataService,
-    private modesService: ModesGeneratorService,
-    private router: Router
+    public modesService: ModesGeneratorService,
+    private sentinelData: SentinelDataService
   ) { }
 
   ngOnInit() {
     if (this.sentinelData.sentinel) {
+      this.show = true;
       this._sentinel = this.sentinelData.sentinel;
-      this._modes = this.modesService.getModes();
     }
   }
 
   get sentinel(): Sentinel {
     return this._sentinel;
-  }
-
-  get modes(): Mode[] {
-    return this._modes;
   }
 }
