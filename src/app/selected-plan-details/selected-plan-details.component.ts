@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Plan} from "../../Plan";
 import {SentinelDataService} from "../sentinel-data.service";
 import 'rxjs/add/operator/switchMap';
@@ -9,19 +9,23 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: 'selected-plan-details.component.html',
   styleUrls: ['selected-plan-details.component.css']
 })
-export class SelectedPlanDetailsComponent implements OnInit {
+export class SelectedPlanDetailsComponent implements OnInit, OnDestroy {
   private _selectedPlan: Plan;
   private _stream: any;
   private _fieldChanger: any = null;
+  private _selectedPlanIndex: number;
 
   constructor(
     private sentinelData: SentinelDataService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this._stream = this.activatedRoute.params.subscribe((params) => this._selectedPlan = this.sentinelData.getPlanByIndex(+params['selected']));
-    console.log(this._selectedPlan);
+    this._stream = this.activatedRoute.params.subscribe((params) => {
+      this._selectedPlanIndex = +params['selected'];
+      this._selectedPlan = this.sentinelData.getPlanByIndex(this._selectedPlanIndex);
+    });
   }
 
   ngOnDestroy() {
@@ -42,6 +46,10 @@ export class SelectedPlanDetailsComponent implements OnInit {
       return;
     }
     this._fieldChanger = this.changeFields({x: posX, y: posY}, this._selectedPlan);
+  }
+
+  public next(): void {
+    this.router.navigate(['/drucken', this._selectedPlanIndex]);
   }
 
   private changeFields(field1: {x: number, y: number}, selectedPlan: Plan): Object { // TypeScript ermöglicht mir nicht, die Curry funktion nur mit einem Param aufzurufen

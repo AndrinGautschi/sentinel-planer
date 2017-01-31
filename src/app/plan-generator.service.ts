@@ -129,7 +129,7 @@ export class PlanGeneratorService {
     return true;
   }
 
-  // Dies ist eine von GitHub kopierte Funktion zur Erstellung mehrdimensionaler Arrays.
+  // Dies ist eine von GitHub kopierte Funktion zur Erstellung mehrdimensionaler Arrays.  TODO: Auswechseln mit ArrayUtil.createArray()
   private createArray(length: number, lengthInner: number): Array<String> { // Workaround mit zweitem Parameter, da TypeScript nicht eine beliebige Anz Param zulässt.
     var arr = new Array(length || 0),
       i = length;

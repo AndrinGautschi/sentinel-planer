@@ -4,6 +4,7 @@ import {CONSTANTS} from "./constants";
  * Created by Andrin on 27.01.2017.
  */
 export class FAIRNESS {
+  // TODO: In einen Service verschieben
   public static getPersonScoreByAllocation(allocation: Allocation): number {
     if (!allocation || allocation.allocation.length <= 0) return; //TODO: Exception handling
 

@@ -20,4 +20,10 @@ export class CONSTANTS {
   static get freeWorth() {
     return 0;
   }
+  static get printSheetShift() { // TODO: Rename
+    return 6; // Der Plan beginnt um 0600 und dauert 24 Stunden
+  }
+  static get printSheetLength() {
+    return 24; // Pro Print Plan werden 24h abgedeckt
+  }
 }

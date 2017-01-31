@@ -17,12 +17,14 @@ import {ConstantsService} from "./constants.service";
 import {PlanGeneratorService} from "./plan-generator.service";
 import { LifeCustomizeCardComponent } from './select-plan/life-customize-card/life-customize-card.component';
 import {ModesGeneratorService} from "./modes-generator.service";
+import { PlanPrintViewComponent } from './plan-print-view/plan-print-view.component';
+import {PrintViewGeneratorService} from "./print-view-generator.service";
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },
   { path: 'auswaehlen', component: SelectPlanComponent },
   { path: 'konfigurieren/:selected', component: SelectedPlanDetailsComponent },
-  // { path: 'drucken', component: PrintComponent },
+  { path: 'drucken/:selected', component: PlanPrintViewComponent },
   { path: '', redirectTo: 'daten', pathMatch: 'full'}, // wenn kein PATH eingegeben
   { path: '**', redirectTo: 'daten'} // wenn unbekannten PATH eingegeben
 ]
@@ -37,7 +39,8 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
     SelectPlanComponent,
     PlanCardComponent,
     SelectedPlanDetailsComponent,
-    LifeCustomizeCardComponent
+    LifeCustomizeCardComponent,
+    PlanPrintViewComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,8 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   providers: [
     SentinelDataService,
     ConstantsService,
-    ModesGeneratorService
+    ModesGeneratorService,
+    PrintViewGeneratorService
   ],
   bootstrap: [AppComponent]
 })
