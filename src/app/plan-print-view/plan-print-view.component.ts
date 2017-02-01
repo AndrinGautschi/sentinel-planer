@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {SentinelDataService} from "../sentinel-data.service";
 import {Plan} from "../../Plan";
 import {PrintViewGeneratorService} from "../print-view-generator.service";
+import {CONSTANTS} from "../util/constants";
 
 @Component({
   selector: 'app-plan-print-view',
@@ -41,8 +42,25 @@ export class PlanPrintViewComponent implements OnInit, OnDestroy {
       if (index === 'commander') return this.sentinelData.sentinel.commander.name;
       if (index === 'deputy') return this.sentinelData.sentinel.deputy.name;
     }
-    
-    return 'No Name';
+    if (typeof index === 'number' && index < this.sentinelData.sentinel.guards.length) {
+      return this.sentinelData.sentinel.guards[index].name;
+    }
+    return '';
+  }
+
+  public getHighlight(sheetNr: number, person: number, hour: number): string {
+    if (sheetNr > this.printSheets.length || sheetNr < this.printSheets.length) return '';
+    if (hour > this.printSheets[0].length || hour < this.printSheets[0].length) return '';
+    if (person > this.printSheets[0][0].length || person < this.printSheets[0][0].length) return '';
+    switch (this.printSheets[sheetNr][hour][person]) {
+      case(CONSTANTS.free):
+        return 'free';
+      case(CONSTANTS.duty):
+        return 'duty';
+      case(CONSTANTS.reserve):
+        return 'reserve';
+    }
+    return '';
   }
 
 }

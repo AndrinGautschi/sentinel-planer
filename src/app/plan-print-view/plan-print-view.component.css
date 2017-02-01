@@ -1,3 +1,13 @@
+.free {
+  background-color: green;
+}
+.reserve {
+  background-color: yellow;
+}
+.duty {
+  background-color: red;
+}
+
 /* PRINT KLASSEN */
 @media print {
   .no-print {
