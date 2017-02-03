@@ -50,7 +50,7 @@ export class PlanPrintViewComponent implements OnInit, OnDestroy {
 
   public getHighlight(sheetNr: number, person: number, hour: number): string {
     console.log('sheet: '+sheetNr+' person: '+person+' hour: '+hour);
-    if (sheetNr > this.printSheets.length || sheetNr < 0) return '';
+    if (sheetNr > this.printSheets.length || sheetNr < 0) return ''; // TODO: Bug
     if (hour - 1 > this.printSheets[0].length || hour - 1 < 0) return ''; // TODO: Remove '-1'
     if (!this.printSheets[0][hour-1] || person - 1 >= this.printSheets[0][hour-1].length || person - 1 < 0) return '';
     console.log('--> '+this.printSheets[sheetNr][hour - 1][person - 1])
