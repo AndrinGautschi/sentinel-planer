@@ -8,16 +8,16 @@ import { Md2Module } from 'md2'; // für Date-/Timepicker
 
 import { AppComponent } from './app.component';
 
-import { SentinelDataService } from './sentinel-data.service';
+import { SentinelDataService } from './shared/sentinel-data.service';
 import { SentinelDataInputComponent } from './sentinel-data-input/sentinel-data-input.component';
 import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 import {ConstantsService} from "./constants.service";
 import { LifeCustomizeCardComponent } from './select-plan/life-customize-card/life-customize-card.component';
-import {ModesGeneratorService} from "./modes-generator.service";
+import {ModesGeneratorService} from "./shared/modes-generator.service";
 import { PlanPrintViewComponent } from './plan-print-view/plan-print-view.component';
-import {PrintViewGeneratorService} from "./print-view-generator.service";
+import {PrintViewGeneratorService} from "./shared/print-view-generator.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File

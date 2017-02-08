@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {SentinelDataService} from "../sentinel-data.service";
+import {SentinelDataService} from "../shared/sentinel-data.service";
 import {Sentinel} from "../../Sentinel";
-import {ModesGeneratorService} from "../modes-generator.service";
-import {PlanGeneratorService} from "../plan-generator.service";
+import {ModesGeneratorService} from "../shared/modes-generator.service";
+import {PlanGeneratorService} from "../shared/plan-generator.service";
 import {Mode} from "../../Mode";
 import {Router} from "@angular/router";
 

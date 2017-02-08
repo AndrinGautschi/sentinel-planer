@@ -1,6 +1,3 @@
-/**
- * Created by Andrin on 27.01.2017.
- */
 export class CONSTANTS {
   static get duty() {
     return 'd'

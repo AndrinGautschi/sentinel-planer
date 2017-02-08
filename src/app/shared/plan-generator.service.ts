@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Plan} from "../Plan";
-import {Mode} from "../Mode";
-import {Person} from "../Person";
-import {Allocation} from "../Allocation";
-import {forEach} from "@angular/router/src/utils/collection";
+import {Plan} from "../../Plan";
+import {Mode} from "../../Mode";
+import {Person} from "../../Person";
+import {Allocation} from "../../Allocation";
 import any = jasmine.any;
 
 const duty = 'd'; // TODO: Service einbinden

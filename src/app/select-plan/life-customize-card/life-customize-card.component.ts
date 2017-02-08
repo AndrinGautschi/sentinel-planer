@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {SentinelDataService} from "../../sentinel-data.service";
+import {SentinelDataService} from "../../shared/sentinel-data.service";
 import {Mode} from "../../../Mode";
-import {ModesGeneratorService} from "../../modes-generator.service";
+import {ModesGeneratorService} from "../../shared/modes-generator.service";
 
 @Component({
   selector: 'app-life-customize-card',

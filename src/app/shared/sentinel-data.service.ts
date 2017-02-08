@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Sentinel } from '../Sentinel';
-import {Plan} from "../Plan";
+import { Sentinel } from '../../Sentinel';
+import {Plan} from "../../Plan";
 
 @Injectable()
 export class SentinelDataService {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Sentinel } from '../../Sentinel';
-import {SentinelDataService} from "../sentinel-data.service";
+import {SentinelDataService} from "../shared/sentinel-data.service";
 import {FormGroup, FormBuilder, Validators, FormArray, AbstractControl} from "@angular/forms";
 import {Person} from "../../Person";
 import {Router} from "@angular/router";

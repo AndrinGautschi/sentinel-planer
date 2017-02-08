@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Plan} from "../Plan";
-import {Sentinel} from "../Sentinel";
-import {Allocation} from "../Allocation";
+import {Plan} from "../../Plan";
+import {Sentinel} from "../../Sentinel";
 import {CONSTANTS} from "./util/constants";
-import {ArrayUtil} from "./util/array-util";
 
 @Injectable()
 export class PrintViewGeneratorService {

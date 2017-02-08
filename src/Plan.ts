@@ -1,7 +1,7 @@
 import {Mode} from "./Mode";
 import {Allocation} from "./Allocation";
-import {FAIRNESS} from "./app/util/fairness";
-import {MATH_UTIL} from "./app/util/math-util";
+import {FAIRNESS} from "./app/shared/util/fairness";
+import {MATH_UTIL} from "./app/shared/util/math-util";
 
 export class Plan {
   constructor(

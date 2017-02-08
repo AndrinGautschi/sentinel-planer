@@ -1,8 +1,6 @@
-import {Allocation} from "../../Allocation";
 import {CONSTANTS} from "./constants";
-/**
- * Created by Andrin on 27.01.2017.
- */
+import {Allocation} from "../../../Allocation";
+
 export class FAIRNESS {
   // TODO: In einen Service verschieben
   public static getPersonScoreByAllocation(allocation: Allocation): number {

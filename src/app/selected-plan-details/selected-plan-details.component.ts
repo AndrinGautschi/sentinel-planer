@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Plan} from "../../Plan";
-import {SentinelDataService} from "../sentinel-data.service";
+import {SentinelDataService} from "../shared/sentinel-data.service";
 import 'rxjs/add/operator/switchMap';
 
 @Component({

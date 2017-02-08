@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Mode} from "../Mode";
+import {Mode} from "../../Mode";
 
 @Injectable()
 export class ModesGeneratorService { // TODO: Renaming in ModesService

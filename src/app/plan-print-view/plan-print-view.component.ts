@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {SentinelDataService} from "../sentinel-data.service";
+import {SentinelDataService} from "../shared/sentinel-data.service";
 import {Plan} from "../../Plan";
-import {PrintViewGeneratorService} from "../print-view-generator.service";
-import {CONSTANTS} from "../util/constants";
+import {PrintViewGeneratorService} from "../shared/print-view-generator.service";
+import {CONSTANTS} from "../shared/util/constants";
 
 @Component({
   selector: 'app-plan-print-view',

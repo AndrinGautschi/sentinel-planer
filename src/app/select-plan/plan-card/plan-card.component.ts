@@ -1,11 +1,11 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Mode} from "../../../Mode";
 import {Person} from "../../../Person";
-import {PlanGeneratorService} from "../../plan-generator.service";
+import {PlanGeneratorService} from "../../shared/plan-generator.service";
 import {Plan} from "../../../Plan";
-import {SentinelDataService} from "../../sentinel-data.service";
+import {SentinelDataService} from "../../shared/sentinel-data.service";
 import {Router} from "@angular/router";
-import {ModesGeneratorService} from "../../modes-generator.service";
+import {ModesGeneratorService} from "../../shared/modes-generator.service";
 
 @Component({
   selector: 'app-plan-card',

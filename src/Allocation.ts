@@ -1,7 +1,7 @@
 import {Person} from "./Person";
 import {Inject} from "@angular/core";
-import {MATH_UTIL} from "./app/util/math-util";
-import {FAIRNESS} from "./app/util/fairness";
+import {MATH_UTIL} from "./app/shared/util/math-util";
+import {FAIRNESS} from "./app/shared/util/fairness";
 
 // Zuteilung einer Person
 export class Allocation {
