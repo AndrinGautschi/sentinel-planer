@@ -1,6 +1,4 @@
-md-grid-tile {
-  margin: 24px;
+md-card{
+  margin: 10px;
 }
-md-card {
-  max-width: 100%;
-}
+

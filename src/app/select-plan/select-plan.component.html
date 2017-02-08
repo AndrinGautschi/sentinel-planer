@@ -2,12 +2,12 @@
   <span>Plan auswählen</span>
 </md-toolbar>
 <div *ngIf="show">
-  <md-grid-list cols="7" rowHeight="500">
-    <md-grid-tile>
+  <div fxLayout="row" fxLayoutAlign="" fxLayoutWrap="wrap">
+    <div fxFlex="20%">
       <app-life-customize-card></app-life-customize-card>
-    </md-grid-tile>
-    <md-grid-tile *ngFor="let modus of modesService.getModes()">
+    </div>
+    <div fxFlex="20%" *ngFor="let modus of modesService.getModes()">
       <app-plan-card [mode]="modus" [persons]="sentinel.guards" [duration]="sentinel.getDurationInHours()"></app-plan-card>
-    </md-grid-tile>
-  </md-grid-list>
+    </div>
+  </div>
 </div>

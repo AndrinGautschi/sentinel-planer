@@ -14,11 +14,11 @@ import { SelectPlanComponent } from './select-plan/select-plan.component';
 import { PlanCardComponent } from './select-plan/plan-card/plan-card.component';
 import { SelectedPlanDetailsComponent } from './selected-plan-details/selected-plan-details.component';
 import {ConstantsService} from "./constants.service";
-import {PlanGeneratorService} from "./plan-generator.service";
 import { LifeCustomizeCardComponent } from './select-plan/life-customize-card/life-customize-card.component';
 import {ModesGeneratorService} from "./modes-generator.service";
 import { PlanPrintViewComponent } from './plan-print-view/plan-print-view.component';
 import {PrintViewGeneratorService} from "./print-view-generator.service";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 const appRoutes: Routes = [ //TODO: Auslagern in seperates File
   { path: 'daten', component: SentinelDataInputComponent },
@@ -49,7 +49,8 @@ const appRoutes: Routes = [ //TODO: Auslagern in seperates File
     MaterialModule.forRoot(),
     Md2Module.forRoot(),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    FlexLayoutModule
   ],
   providers: [
     SentinelDataService,

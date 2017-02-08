@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Optional} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {Mode} from "../../../Mode";
 import {Person} from "../../../Person";
 import {PlanGeneratorService} from "../../plan-generator.service";
@@ -6,12 +6,12 @@ import {Plan} from "../../../Plan";
 import {SentinelDataService} from "../../sentinel-data.service";
 import {Router} from "@angular/router";
 import {ModesGeneratorService} from "../../modes-generator.service";
-import {PlatformLocation} from "@angular/common";
 
 @Component({
   selector: 'app-plan-card',
   templateUrl: 'plan-card.component.html',
-  styleUrls: ['plan-card.component.css']
+  styleUrls: ['plan-card.component.css',
+              '../select-plan.component.css']
 })
 // Verwaltet die zusammenfassende Ansicht für einen Plan
 export class PlanCardComponent implements OnInit {

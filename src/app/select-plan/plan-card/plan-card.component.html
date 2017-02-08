@@ -1,13 +1,15 @@
-<md-card>
-  <div *ngIf="loading">
+<div *ngIf="loading">
+  <md-card>
     <div class="loader">
       <span class="dot dot_1"></span>
       <span class="dot dot_2"></span>
       <span class="dot dot_3"></span>
       <span class="dot dot_4"></span>
     </div>
-  </div>
-  <div *ngIf="!loading">
+  </md-card>
+</div>
+<div *ngIf="!loading">
+  <md-card>
     <!-- TODO: Prozentangabe für Fairness-Indikator -->
     <!-- TODO: Aufruf so gestalten, dass bei jeder Mal ViewReload die Prozentwerte neu berechnet werden -->
     <md-progress-circle [value]="localPlan.score" mode="determinate" ></md-progress-circle>
@@ -17,5 +19,5 @@
     <md-card-actions>
       <button md-button type="button" (click)="select()">KONFIGURIEREN</button>
     </md-card-actions>
-  </div>
-</md-card>
+  </md-card>
+</div>
